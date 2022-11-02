@@ -13,5 +13,8 @@ int main(){
     double E = energy(lattice, J);
     std::cout << E << std::endl;
 
+    double m = magnetization(lattice);
+    std::cout << m << std::endl;
+
     return 0;
 }

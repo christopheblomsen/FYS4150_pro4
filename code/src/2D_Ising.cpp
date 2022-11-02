@@ -32,8 +32,8 @@ arma::mat lattice_init(int N){
 }
 
 
-double energy(arma::mat lattice, int J){
-
+double energy(arma::mat lattice, int J, bool by_spin){
+    // by_spin if we want to normalize it by spin set to false by default
     int N = lattice.n_rows;
     double E = 0.;
     
@@ -44,5 +44,56 @@ double energy(arma::mat lattice, int J){
             // std::cout << E << std::endl;
         }
     }
-    return E *= -J;
+    if (by_spin){
+        return E *= -J/N;
+    }
+    else{
+        return E *= -J;
+    }
+}
+
+
+double magnetization(arma::mat lattice, bool by_spin){
+    // Calculate the magnetization |M| or |m| depending on by_spin, by default
+    // is |M|
+
+    if (by_spin){
+        int N = lattice.n_cols;
+        double M = arma::accu(lattice) / N;
+    }
+
+    double M = arma::accu(lattice);
+
+    return M;
+}
+
+double Cv(arma::vec E, int N, double T){
+    
+    arma::vec E2 = arma::pow(E, 2);
+    double average_E = arma::mean(E);
+    double average_E2 = arma::mean(E2);
+
+    double cv = (average_E2 - average_E * average_E2) / (N * T * T);
+    return cv;
+
+}
+
+
+double Chi(arma::vec M, int N, double T){
+    
+    // make the 2 version of M needed
+    arma::vec M2 = arma::pow(M, 2);
+    arma::vec absM = arma::abs(M);
+
+    // take the average
+    double average_M2 = arma::mean(M2);
+    double average_absM = arma::mean(absM);
+
+
+    //Now compute the susceptibility
+    double xi = (average_M2 - average_absM * average_absM) / (N * T);
+
+    return xi;
+
+
 }
