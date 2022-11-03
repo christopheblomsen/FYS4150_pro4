@@ -1,7 +1,6 @@
 #include "2D_Ising.hpp"
 #include <iostream>
 #include <armadillo>
-#include <random>
 
 
 // create an NxN lattice with random spins from {-1,1}
@@ -11,7 +10,7 @@ arma::mat lattice_init(int N){
     arma::vec spin = {-1, 1};
     
     // Random seed generated to make sure we never start with the same lattice
-    srand(time(NULL));
+    arma::arma_rng::set_seed_random();
 
     arma::mat lattice = arma::mat(N, N);
     // Apparently setting all initial random values at once is faster
