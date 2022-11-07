@@ -16,6 +16,7 @@ void Ising::reset(double* M_tot, double* M_tot2, double* M_abs){
     (*M_tot2) = 0;
     (*M_abs)  = 0;
 
+
 // create an NxN lattice with random spins from {-1,1}
 arma::mat Ising::lattice_init(int N){
     
@@ -89,7 +90,7 @@ double Ising::Cv(arma::vec E, int N, double T){
     double average_E = arma::mean(E);
     double average_E2 = arma::mean(E2);
 
-    double cv = (average_E2 - average_E * average_E2) / (N * T * T);
+    double cv = (average_E2 - average_E * average_E) / (N * T * T);
     return cv;
 
 }
@@ -121,6 +122,8 @@ void Ising::mcmc(int N_burn, int i, arma::vec* Cv_vec){
 
 void Ising::Metropolis(arma::mat &lattice, double* E_sys, double* M_sys){
     for (int n = 0; n < N; n++){
+
+        // Pick a random spin
         int i = arma::randi(arma::distri_param(0, L-1));
         int j = arma::randi(arma::distri_param(0, L-1));
 
