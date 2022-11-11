@@ -6,7 +6,7 @@ int main(){
     
     int N = 3;
     double J = 1.;
-    Ising ise(N);
+    Ising ise(N, 1);
     arma::mat lattice = ise.lattice_init(N);
     std::cout << lattice << std::endl;
 
