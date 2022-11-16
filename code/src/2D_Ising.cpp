@@ -120,21 +120,27 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
     double E_sys = energy(lattice);
     double M_sys = magnetization(lattice);
 
-    // Save the initial condition, i.e energy and magnetization
-    data(0, 0) = E_sys;
-    data(1, 0) = M_sys;
+    // // Save the initial condition, i.e energy and magnetization
+    // data(0, 0) = E_sys;
+    // data(1, 0) = M_sys;
 
     // To keep track in our data matrix index
-    int index = 1;
+    int index = 0;
 
     // We run the i cycles 
     for (int k=1; k <= i; k++){
-        Metropolis(lattice, E_sys, M_sys);
+        
+        // We reset the averaged value to the initial system 
+        // after every cycle
+        double E_avg = E_sys;
+        double M_avg = M_sys;
+
+        Metropolis(lattice, E_sys, M_sys, E_avg, M_avg);
 
         // When we pass the burning point we start registering the values
         if (k > N_burn){
-            data(0, index) = E_sys;
-            data(1, index) = M_sys;
+            data(0, index) = E_avg;
+            data(1, index) = M_avg;
 
             index += 1; 
         }
@@ -156,11 +162,12 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
 
 // This is to run one iteration of the Metropolis algorithm
 // modify the lattice and update the energy and magnetization (only the current step)
-void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
+void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys, double &E_avg, double &M_avg){
     
     //  One cycle correspond to N spin flip attempt. 
     for (int n = 0; n < N; n++){
         std::cout << "Iteration: " << n+1 << std::endl;
+
         // Pick a random spin
         int i = arma::randi(arma::distr_param(0, L-1));
         int j = arma::randi(arma::distr_param(0, L-1));
@@ -180,10 +187,10 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
         int E_flip = -1 * E_noflip;
         int dE = E_flip - E_noflip;
 
-        // // If we have a 2x2 lattice we 
-        // if (L == 2){
-        //     dE /= 2.;
-        // }
+        // If we have a 2x2 lattice we 
+        if (L == 2){
+            dE /= 2.;
+        }
 
         // Should always be -8, -4, 0, 4, 8 
         std::cout << "dE is: " << dE << std::endl;
@@ -229,7 +236,16 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
         std::cout << "M is: " << M_sys << std::endl;
         std::cout << lattice << std::endl;
         std::cout << "" << std::endl;
-        
+
         }
+
+        // update the average
+        E_avg += E_sys;
+        M_avg += M_sys;
     }
+
+    // Take the average
+    E_avg = E_avg / (N + 1);
+    M_avg = M_avg / (N + 1);
+
 }

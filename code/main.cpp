@@ -27,7 +27,7 @@ int main(){
 
 
     // mcmc check 
-    arma::mat data = arma::mat(2, (cycle - burn) + 1);
+    arma::mat data = arma::mat(2, (cycle - burn));
     data = ise.mcmc(burn, cycle, data);
     std::cout << "data: " << data << std::endl;     
     return 0;
