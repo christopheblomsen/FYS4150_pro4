@@ -31,7 +31,7 @@ arma::mat Ising::lattice_init(int N){
     arma::mat lattice = arma::mat(N, N);
     // Apparently setting all initial random values at once is faster
     arma::mat random_value = arma::randi<arma::mat>(N, N, arma::distr_param(0, 1));
-    std::cout << random_value << std::endl;
+    // std::cout << random_value << std::endl;
 
 
     for (int i=0; i < N; i++){
@@ -108,21 +108,49 @@ double Ising::Chi(double M_avg, int N, double T){
 
 
 // We run several cycles of Metropolis  
-void Ising::mcmc(int N_burn, int i, arma::vec Cv_vec){
-    arma::mat lattice = lattice_init(N);
+arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
+    // N_burn is the number of cycle we want to throw away 
+    // i is the number of cycle we want to do 
+    // data is matrix to get the energy and the magnetisation
+    // the values of interest are calculated outside to help 
+    // better recognize where a potential bug comes from. 
+
+    // Initialize the system 
+    arma::mat lattice = lattice_init(L);
     double E_sys = energy(lattice);
     double M_sys = magnetization(lattice);
 
-    double E_sum = 0.;
-    double M_sum = 0.;
+    // Save the initial condition, i.e energy and magnetization
+    data(0, 0) = E_sys;
+    data(1, 0) = M_sys;
 
-    for (int i=0; i < N_burn; i++){
+    // To keep track in our data matrix index
+    int index = 1;
+
+    // We run the i cycles 
+    for (int k=1; k <= i; k++){
         Metropolis(lattice, E_sys, M_sys);
-        E_sum += E_sys;
-        M_sum += std::fabs(M_sys);
+
+        // When we pass the burning point we start registering the values
+        if (k > N_burn){
+            data(0, index) = E_sys;
+            data(1, index) = M_sys;
+
+            index += 1; 
+        }
     }
-    double E_avg = E_sum/N_burn;
-    double M_avg = M_sum/N_burn;
+    
+    return data;
+    // double E_sum = 0.;
+    // double M_sum = 0.;
+
+    // for (int i=0; i < N_burn; i++){
+    //     Metropolis(lattice, E_sys, M_sys);
+    //     E_sum += E_sys;
+    //     M_sum += std::fabs(M_sys);
+    // }
+    // double E_avg = E_sum/N_burn;
+    // double M_avg = M_sum/N_burn;
 }
 
 
@@ -151,6 +179,11 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
 
         int E_flip = -1 * E_noflip;
         int dE = E_flip - E_noflip;
+
+        // // If we have a 2x2 lattice we 
+        // if (L == 2){
+        //     dE /= 2.;
+        // }
 
         // Should always be -8, -4, 0, 4, 8 
         std::cout << "dE is: " << dE << std::endl;

@@ -25,7 +25,7 @@ struct Ising{
 
     double Chi(double M_avg, int N, double T);
 
-    void mcmc(int N_burn, int i, arma::vec Cv_vec);
+    arma::mat mcmc(int N_burn, int i, arma::mat data);
 
     void Metropolis(arma::mat &lattice, double &E_sys, double &M_sys);
 };
