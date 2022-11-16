@@ -4,8 +4,8 @@ struct Ising{
     // Temperature is in J/kb so kb should be 1, not 1.380658e-23
     double k{1.};
     int N;
-    int N_cycle;
     int L;
+    double T;
     double beta;
     Ising(int N, double T);
     arma::mat lattice_init(int N);

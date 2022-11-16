@@ -4,10 +4,10 @@
 #include <armadillo>
 
 
-Ising::Ising(int N, double T){
-    L = L;
-    N_cycle = N_cycle;
+Ising::Ising(int length, double temperature){
+    L = length;
     N = L*L;
+    T = temperature;
     beta = 1/(k*T);
 
     // Probably could add the constant for our system 
@@ -63,13 +63,13 @@ double Ising::energy(arma::mat lattice, int J, bool by_spin){
             // std::cout << E << std::endl;
         }
     }
-    // if (by_spin){
-    //     return E *= -J/N;
-    // }
-    // else{
-    //     return E *= -J;
-    // }
-    return E;
+
+    // For the 2x2 case we count twice the energy with this method
+    if (N == 2){
+        E = E /2.;
+    }
+
+    return E*J;
 }
 
 
@@ -106,6 +106,8 @@ double Ising::Chi(double M_avg, int N, double T){
     return xi;
 }
 
+
+// We run several cycles of Metropolis  
 void Ising::mcmc(int N_burn, int i, arma::vec Cv_vec){
     arma::mat lattice = lattice_init(N);
     double E_sys = energy(lattice);
@@ -127,11 +129,15 @@ void Ising::mcmc(int N_burn, int i, arma::vec Cv_vec){
 // This is to run one iteration of the Metropolis algorithm
 // modify the lattice and update the energy and magnetization (only the current step)
 void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
+    
+    //  One cycle correspond to N spin flip attempt. 
     for (int n = 0; n < N; n++){
-
+        std::cout << "Iteration: " << n+1 << std::endl;
         // Pick a random spin
         int i = arma::randi(arma::distr_param(0, L-1));
         int j = arma::randi(arma::distr_param(0, L-1));
+        std::cout << "i: " << i << std::endl;
+        std::cout << "j: " << j << std::endl;
 
 
         // to Calculate dE we first compute the energy around 
@@ -147,21 +153,50 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
         int dE = E_flip - E_noflip;
 
         // Should always be -8, -4, 0, 4, 8 
-        std::cout << "dE is:" << dE << std::endl;
+        std::cout << "dE is: " << dE << std::endl;
+        std::cout << lattice << std::endl;
+        std::cout << "entering step verification" << std::endl;
+        std::cout << "" << std::endl;
 
+        // Verification of the new state. 
         if (dE <= 0){
             lattice(i, j) *= -1;
             int dM = 2*lattice(i, j);
             (E_sys) += dE;
             (M_sys) += dM;
+
+            std::cout << "Change done (<=0)" << std::endl;
+            std::cout << "New energy is: " << E_sys << std::endl;
+            std::cout << "New M is: " << M_sys << std::endl; 
+            std::cout << lattice << std::endl;
+            std::cout << "" << std::endl;
+        
         }
         else{
-            if (arma::randu() < std::exp(-beta*dE)){
+            double u = arma::randu();
+            double p = std::exp(-beta * dE);
+
+            std::cout << "u is: " << u << std::endl;
+            std::cout << "p is: " << p << std::endl;
+
+            if (u < p){
                 lattice(i, j) *= -1;
                 int dM = 2*lattice(i, j);
                 (E_sys) += dE;
                 (M_sys) += dM;
+
+                std::cout << "Change done" << std::endl;
+                std::cout << "New energy is: " << E_sys << std::endl;
+                std::cout << "New M is: " << M_sys << std::endl; 
+                std::cout << lattice << std::endl;
+                std::cout << "" << std::endl;
             }
+        std::cout << "No change" << std::endl;
+        std::cout << "energy is: " << E_sys << std::endl;
+        std::cout << "M is: " << M_sys << std::endl;
+        std::cout << lattice << std::endl;
+        std::cout << "" << std::endl;
+        
         }
     }
 }
