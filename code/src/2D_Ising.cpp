@@ -9,9 +9,12 @@ Ising::Ising(int N, double T){
     N_cycle = N_cycle;
     N = L*L;
     beta = 1/(k*T);
+
+    // Probably could add the constant for our system 
+    // when we calculate Cv and Chi 
 }
 
-// No idea
+// No idea,  maybe just recreate a new lattice? 
 void Ising::reset(){
     std::cout << "No idea" << std::endl;
 }
@@ -120,6 +123,9 @@ void Ising::mcmc(int N_burn, int i, arma::vec Cv_vec){
     double M_avg = M_sum/N_burn;
 }
 
+
+// This is to run one iteration of the Metropolis algorithm
+// modify the lattice and update the energy and magnetization (only the current step)
 void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
     for (int n = 0; n < N; n++){
 
@@ -127,11 +133,21 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
         int i = arma::randi(arma::distr_param(0, L-1));
         int j = arma::randi(arma::distr_param(0, L-1));
 
-        int dE = 2*lattice(index(i), index(j))*
+
+        // to Calculate dE we first compute the energy around 
+        // the proposed spin and the energy around if flipped
+        // the soustraction gives us the deltaE 
+        int E_noflip = lattice(index(i), index(j))*
             (lattice(index(i+1), index(j))
              + lattice(index(i-1), index(j))
              + lattice(index(i), index(j+1))
             + lattice(index(i), index(j-1)));
+
+        int E_flip = -1 * E_noflip;
+        int dE = E_flip - E_noflip;
+
+        // Should always be -8, -4, 0, 4, 8 
+        std::cout << "dE is:" << dE << std::endl;
 
         if (dE <= 0){
             lattice(i, j) *= -1;
