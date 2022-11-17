@@ -101,8 +101,11 @@ double Ising::Cv(double E_avg, int N, double T){
 }
 
 
-double Ising::Chi(double M_avg, int N, double T){
-    double xi = (M_avg - M_avg * M_avg) / (N * T);
+double Ising::Chi(arma::vec M, double M_avg, int N, double T){
+    arma::vec M_ = arma::pow(M, 2);
+    double M2 = arma::mean(M_);
+
+    double xi = (M2 - M_avg * M_avg) / (N * T);
     return xi;
 }
 
@@ -162,7 +165,8 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
 
 // This is to run one iteration of the Metropolis algorithm
 // modify the lattice and update the energy and magnetization (only the current step)
-void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys, double &E_avg, double &M_avg){
+void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys,
+                       double &E_avg, double &M_avg){
     
     //  One cycle correspond to N spin flip attempt. 
     for (int n = 0; n < N; n++){
@@ -247,5 +251,4 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys, double 
     // Take the average
     E_avg = E_avg / (N + 1);
     M_avg = M_avg / (N + 1);
-
 }

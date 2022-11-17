@@ -23,7 +23,7 @@ struct Ising{
 
     double Cv(double E_avg, int N, double T);
 
-    double Chi(double M_avg, int N, double T);
+    double Chi(arma::vec M, double M_avg, int N, double T);
 
     arma::mat mcmc(int N_burn, int i, arma::mat data);
 
