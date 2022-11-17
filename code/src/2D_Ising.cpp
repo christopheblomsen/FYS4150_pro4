@@ -87,15 +87,15 @@ double Ising::magnetization(arma::mat lattice, bool by_spin){
     return M;
 }
 
-double Ising::Cv(double E_avg, int N, double T){
+double Ising::Cv(arma::vec E, double E_avg, int N, double T){
     // Avg E and avg E ^2
 
-//     // arma::vec E2 = arma::pow(E, 2);
-//     // double average_E = arma::mean(E);
+    arma::vec E2 = arma::pow(E, 2);
+    double average_E = arma::mean(E);
 //     // double average_E2 = arma::mean(E2);
 
 
-    double cv = (E_avg - E_avg * E_avg) / (N * T * T);
+    double cv = (E2 - E_avg * E_avg) / (N * T * T);
     return cv;
 
 }
