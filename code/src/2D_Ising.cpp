@@ -93,7 +93,7 @@ double Ising::Cv(arma::vec E, int N, double T){
     double average_E2 = arma::mean(E2);
 
 
-    double cv = (average_E2 - avgerage_E * avgerage_E) / (N * T * T);
+    double cv = (average_E2 - average_E * average_E) / (N * T * T);
     return cv;
 
 }
