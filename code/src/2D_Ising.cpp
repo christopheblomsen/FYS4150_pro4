@@ -87,23 +87,23 @@ double Ising::magnetization(arma::mat lattice, bool by_spin){
     return M;
 }
 
-double Ising::Cv(arma::vec E, double E_avg, int N, double T){
-    // Avg E and avg E ^2
-
+double Ising::Cv(arma::vec E, int N, double T){
     arma::vec E2 = arma::pow(E, 2);
     double average_E = arma::mean(E);
-//     // double average_E2 = arma::mean(E2);
+    double average_E2 = arma::mean(E2);
 
 
-    double cv = (E2 - E_avg * E_avg) / (N * T * T);
+    double cv = (average_E2 - avgerage_E * avgerage_E) / (N * T * T);
     return cv;
 
 }
 
 
-double Ising::Chi(arma::vec M, double M_avg, int N, double T){
+double Ising::Chi(arma::vec M, int N, double T){
+    // Remove M_avg signature
     arma::vec M_ = arma::pow(M, 2);
     double M2 = arma::mean(M_);
+    double M_avg = arma::mean(M);
 
     double xi = (M2 - M_avg * M_avg) / (N * T);
     return xi;
@@ -142,8 +142,8 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
 
         // When we pass the burning point we start registering the values
         if (k > N_burn){
-            data(0, index) = E_avg;
-            data(1, index) = M_avg;
+            data(0, index) = E_sys;
+            data(1, index) = std::fabs(M_sys);
 
             index += 1; 
         }
@@ -243,12 +243,20 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys,
 
         }
 
-        // update the average
-        E_avg += E_sys;
-        M_avg += M_sys;
+        // Even said useless
+        // // update the average
+        // E_avg += E_sys;
+        // M_avg += M_sys;
     }
 
     // Take the average
-    E_avg = E_avg / (N + 1);
-    M_avg = M_avg / (N + 1);
+    // E_avg = E_avg / (N + 1);
+    // M_avg = M_avg / (N + 1);
 }
+// Ordered and random in init, plotting in python
+//
+// prob 6, sample the mcmc. for T=1, only 3(4) different energy
+// Not to wide, not wider then something
+//
+//
+// prob 8, many different temperature, energy as function of temp

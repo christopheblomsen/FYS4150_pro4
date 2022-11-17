@@ -21,9 +21,9 @@ struct Ising{
 
     double magnetization(arma::mat lattice, bool by_spin = false);
 
-    double Cv(arma::vec E, double E_avg, int N, double T);
+    double Cv(arma::vec E, int N, double T);
 
-    double Chi(arma::vec M, double M_avg, int N, double T);
+    double Chi(arma::vec M, int N, double T);
 
     arma::mat mcmc(int N_burn, int i, arma::mat data);
 
