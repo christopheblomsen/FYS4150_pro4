@@ -4,12 +4,12 @@
 
 int main(){
     
-    int L = 2;
+    int L = 20;
     double J = 1.;
     double N = 4;
     double temperature = 1.;
-    int cycle = 2;
-    int burn = 0;
+    int cycle = 50;
+    int burn = 20;
 
     Ising ise(L, temperature);
 
@@ -27,8 +27,9 @@ int main(){
 
 
     // mcmc check 
-    arma::mat data = arma::mat(2, (cycle - burn));
+    arma::mat data = arma::mat(3, (cycle - burn));
     data = ise.mcmc(burn, cycle, data);
-    std::cout << "data: " << data << std::endl;     
+    std::cout << "data: " << std::endl << data << std::endl;
+    data.save("output.bin");
     return 0;
 }
