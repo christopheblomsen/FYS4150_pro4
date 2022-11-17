@@ -7,12 +7,18 @@ struct Ising{
     int L;
     double T;
     double beta;
-    Ising(int N, double T);
+    bool order;
+    Ising(int length, double temperature, bool order_=false);
     arma::mat lattice_init(int N);
 
     // reset for each mcmc
     // What goes in here?
     void reset();
+
+    // Method for ordered lattice
+    void ordered_lattice(int N, int spin, arma::mat &lattice);
+
+    void unordered_lattice(int N, arma::vec spin, arma::mat &lattice);
 
     // Function for periodic boundary
     int index(int i);
