@@ -1,2 +1,2 @@
-L,J,N,cycle,burn,temp1,temp2
-20,1,4,50,20,1.,2.4
+L,J,N,cycle,burn,temp1,temp2,order
+20,1,4,50,20,1.,2.4,0
