@@ -74,7 +74,7 @@ beta = 1
 
 
 
-os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code")
+os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code/data")
 
 # Create the arrays for problem 4
 epsilon = np.zeros(20)
@@ -165,33 +165,59 @@ test = list[::3]
 
 # Plot Problem 5
 
-fig, ax = plt.subplots()
-ax.plot(list, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
-ax.plot(list, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
-ax.plot(list, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
-ax.plot(list, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
-ax.set_xticks(test)
-ax.set_xticklabels(test)
-ax.legend(loc='best')
-ax.set_xlabel(r'$\mathrm{Number\ of\ cycles}$')
-ax.set_ylabel(r'$<\epsilon>$')
-ax.set_title(r'$<\epsilon> \mathrm{\ vs\ number\ of\ cycles}$')
-fig.savefig("epsilon_problem5.pdf")
+# fig, ax = plt.subplots()
+# ax.plot(list, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
+# ax.plot(list, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
+# ax.plot(list, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
+# ax.plot(list, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
+# ax.set_xticks(test)
+# ax.set_xticklabels(test)
+# ax.legend(loc='best')
+# ax.set_xlabel(r'$\mathrm{Number\ of\ cycles}$')
+# ax.set_ylabel(r'$<\epsilon>$')
+# ax.set_title(r'$<\epsilon> \mathrm{\ vs\ number\ of\ cycles}$')
+# fig.savefig("epsilon_problem5.pdf")
 
-fig, ax = plt.subplots()
-ax.plot(list, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
-ax.plot(list, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
-ax.plot(list, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
-ax.plot(list, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
-ax.set_xticks(test)
-ax.set_xticklabels(test)
-ax.legend(loc='best')
-ax.set_xlabel(r'$<|m|>\mathrm{Number\ of\ cycles}$')
-ax.set_ylabel(r'$<|m|>$')
-ax.set_title(r'$<|m|> \mathrm{\ vs\ number\ of\ cycles}$')
-fig.savefig("m_problem5.pdf")
+# fig, ax = plt.subplots()
+# ax.plot(list, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
+# ax.plot(list, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
+# ax.plot(list, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
+# ax.plot(list, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
+# ax.set_xticks(test)
+# ax.set_xticklabels(test)
+# ax.legend(loc='best')
+# ax.set_xlabel(r'$<|m|>\mathrm{Number\ of\ cycles}$')
+# ax.set_ylabel(r'$<|m|>$')
+# ax.set_title(r'$<|m|> \mathrm{\ vs\ number\ of\ cycles}$')
+# fig.savefig("m_problem5.pdf")
 
 
+# Problem 6
+# Normally after the iteration the latest saved data1_rdm and data2_rdm 
+# will be L=20, N=100000
+# test = pa.mat()
+# test.load("L20_ord_T1_1000_cycles.bin")
+eps_prob6 = data1_rdm[0,:] /400 
+eps2_prob6 = data2_rdm[0,:] / 400
+
+var_prob5 = np.round(np.var(eps_prob6), 5)
+var2_prob5 = np.round(np.var(eps2_prob6), 5)
+
+plt.figure()
+plt.hist(eps_prob6, density=True, bins=[-2,-1.99,-1.98,-1.96, -1.94], label=f"Var: {var_prob5}")
+plt.xlabel(r"$\epsilon$")
+plt.ylabel("Density")
+plt.legend(loc='best')
+plt.title(r"Normalized histogram of $\epsilon$ for T=1")
+plt.savefig("Histo_T1.pdf")
+
+plt.figure()
+plt.hist(eps2_prob6, density=True, bins=20, label=f"Var: {var2_prob5}")
+plt.xlabel(r"$\epsilon$")
+plt.ylabel("Density")
+plt.legend(loc='best')
+plt.title(r"Normalized histogram of $\epsilon$ for T=2.4")
+plt.savefig("Histo_T2.pdf")
 plt.show()
 
 # data1 = pa.mat()
