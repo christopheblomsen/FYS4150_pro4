@@ -24,8 +24,8 @@ int main(){
     // int L_1 = 2;
 
     // Ising ising1(L_1, T_1);
-    arma::vec cycles_1 = {500, 1000 ,2000, 3000, 4000, 5000, 6000, 7000, 
-    8000, 9000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000};
+    // arma::vec cycles_1 = {500, 1000 ,2000, 3000, 4000, 5000, 6000, 7000, 
+    // 8000, 9000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000};
 
     // // arma::vec cycles_1 = {5, 10};
     // for (int cycle : cycles_1){
@@ -38,45 +38,43 @@ int main(){
     //Problem 5
     //////////////////////////////////////////////////////////////////////////////
     
-    // Set up the parameters for the test 
-    int L_2 = 20;
-    double T_2 = 1.;
-    double T_21 = 2.4;
+    // // Set up the parameters for the test 
+    // int L_2 = 20;
+    // double T_2 = 1.;
+    // double T_21 = 2.4;
 
-    // Create the environnement for both temperature
-    Ising ising2(L_2, T_2);
-    Ising ising2_1(L_2, T_21);
-    Ising ising2_ord(L_2, T_2, true);
-    Ising ising2_1_ord(L_2, T_21, true);
+    // // Create the environnement for both temperature
+    // Ising ising2(L_2, T_2);
+    // Ising ising2_1(L_2, T_21);
+    // Ising ising2_ord(L_2, T_2, true);
+    // Ising ising2_1_ord(L_2, T_21, true);
 
-    // Iterate over every number of cycle 
-    for (int cycle : cycles_1){
+    // // Iterate over every number of cycle 
+    // for (int cycle : cycles_1){
         
-        // Create four data different for both temperature and start 
-        arma::mat data1 = arma::mat(3, cycle);
-        arma::mat data2 = arma::mat(3, cycle);
-        arma::mat data1_ord = arma::mat(3, cycle);
-        arma::mat data2_ord = arma::mat(3, cycle);
+    //     // Create four data different for both temperature and start 
+    //     arma::mat data1 = arma::mat(3, cycle);
+    //     arma::mat data2 = arma::mat(3, cycle);
+    //     arma::mat data1_ord = arma::mat(3, cycle);
+    //     arma::mat data2_ord = arma::mat(3, cycle);
 
-        data1 = ising2.mcmc(0, cycle, data1);
-        data2 = ising2_1.mcmc(0, cycle, data2);
-        data1_ord = ising2_ord.mcmc(0, cycle, data1);
-        data2_ord = ising2_1_ord.mcmc(0, cycle, data2_ord);
+    //     data1 = ising2.mcmc(0, cycle, data1);
+    //     data2 = ising2_1.mcmc(0, cycle, data2);
+    //     data1_ord = ising2_ord.mcmc(0, cycle, data1);
+    //     data2_ord = ising2_1_ord.mcmc(0, cycle, data2_ord);
 
-        data1.save("L20_random_T1_"+std::to_string(cycle)+"_cycles.bin");
-        data2.save("L20_random_T24_"+std::to_string(cycle)+"_cycles.bin");
-        data1_ord.save("L20_ord_T1_"+std::to_string(cycle)+"_cycles.bin");
-        data2_ord.save("L20_ord_T24_"+std::to_string(cycle)+"_cycles.bin");
-    }
+    //     data1.save("L20_random_T1_"+std::to_string(cycle)+"_cycles.bin");
+    //     data2.save("L20_random_T24_"+std::to_string(cycle)+"_cycles.bin");
+    //     data1_ord.save("L20_ord_T1_"+std::to_string(cycle)+"_cycles.bin");
+    //     data2_ord.save("L20_ord_T24_"+std::to_string(cycle)+"_cycles.bin");
+    // }
 
-
-    
     
     //////////////////////////////////////////////////////////////////////////////
     // Problem 7
     //////////////////////////////////////////////////////////////////////////////
     // // MCMC parallel check
-    // arma::vec temp = arma::linspace(1., 2.4, 20);
+    // arma::vec temp = arma::linspace(1., 2.4, 50);
     // temp.save("temperature.bin");
 
     // auto start1 = std::chrono::high_resolution_clock::now();
@@ -122,9 +120,52 @@ int main(){
     // auto finish2 = std::chrono::high_resolution_clock::now();
 
     // std::cout << "Time for serial: " << std::chrono::duration_cast<std::chrono::seconds>(finish2-start2).count() << " s" << std::endl;
+    
     //////////////////////////////////////////////////////////////////////////////////
+    // Problem 8 
+    //////////////////////////////////////////////////////////////////////////////////
+    arma::vec L_list = {40, 60, 80, 100};
+    arma::vec temperature8 = arma::linspace(2.1, 2.4, 20);
+    int cycle8 = 60000;
+    int burn = 10000;
 
-    // for (double temp : temperature){
+    temperature8.save("temp_prob8.bin");
+    
+    #pragma omp parallel for
+    for (int t=0; t < temperature8.n_elem; t++){
+        // We get the temperature
+        double T8 = temperature8[t];
+
+        // We create the environnemt for the different temperatures
+        Ising ising40(L_list[0], T8);
+        Ising ising60(L_list[1], T8);
+        Ising ising80(L_list[2], T8);
+        Ising ising100(L_list[3], T8);        
+
+        // We create the data 
+        arma::mat data40 = arma::mat(3, cycle8 - burn);
+        arma::mat data60 = arma::mat(3, cycle8 - burn);
+        arma::mat data80 = arma::mat(3, cycle8 - burn);
+        arma::mat data100 = arma::mat(3, cycle8 - burn);
+
+        // Run the simulation
+        data40 = ising40.mcmc(burn, cycle8, data40);
+        data60 = ising60.mcmc(burn, cycle8, data60);
+        data80 = ising80.mcmc(burn, cycle8, data80);
+        data100 = ising100.mcmc(burn, cycle8, data100);
+
+        // Save the data 
+        data40.save("L40_prob8_"+std::to_string(t)+".bin");
+        data60.save("L60_prob8_"+std::to_string(t)+".bin");
+        data80.save("L80_prob8_"+std::to_string(t)+".bin");
+        data100.save("L100_prob8_"+std::to_string(t)+".bin");
+    }
+
+
+    return 0;
+}
+
+ // for (double temp : temperature){
     //     std::string temp_string = std::to_string(temp);
     //     Ising ise(L, temp, order);
 
@@ -146,8 +187,4 @@ int main(){
     //     // data = ise.mcmc(burn, cycle, data);
     //     // std::cout << "data: " << std::endl << data << std::endl;
     //     // data.save(filename+temp_string+".bin");
-    
     // }
-    return 0;
-}
-

@@ -97,13 +97,13 @@ double Ising::magnetization(arma::mat lattice, bool by_spin){
     //     int N = lattice.n_cols;
     //     double M = arma::accu(lattice) / N;
     // }
-    // double M = 0;
-    // for (int i=0; i < lattice.n_rows; i++){
-    //     for (int j=0; j < lattice.n_cols; j++){
-    //         M += lattice(i, j);
-    //     }
-    // }
-    double M = arma::accu(lattice);
+    double M = 0;
+    for (int i=0; i < lattice.n_rows; i++){
+        for (int j=0; j < lattice.n_cols; j++){
+            M += lattice(i, j);
+        }
+    }
+    // double M = arma::accu(lattice);
 
     return M;
 }
@@ -165,7 +165,7 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
         if (k > N_burn){
             // std::cout << "in" <<std::endl;
             data(0, index) = E_sys;
-            data(1, index) = std::fabs(M_sys);
+            data(1, index) = M_sys;
             data(2, index) = k;
 
             index += 1; 
