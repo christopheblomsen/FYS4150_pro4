@@ -76,9 +76,9 @@ double Ising::energy(arma::mat lattice, int J, bool by_spin){
     }
 
     // For the 2x2 case we count twice the energy with this method
-    if (N == 2){
-        E = E /2.;
-    }
+    // if (N == 2){
+    //     E = E /2.;
+    // }
 
     if (J == 1){
         return E;
@@ -93,11 +93,16 @@ double Ising::magnetization(arma::mat lattice, bool by_spin){
     // Calculate the magnetization |M| or |m| depending on by_spin, by default
     // is |M|
 
-    if (by_spin){
-        int N = lattice.n_cols;
-        double M = arma::accu(lattice) / N;
-    }
-
+    // if (by_spin){
+    //     int N = lattice.n_cols;
+    //     double M = arma::accu(lattice) / N;
+    // }
+    // double M = 0;
+    // for (int i=0; i < lattice.n_rows; i++){
+    //     for (int j=0; j < lattice.n_cols; j++){
+    //         M += lattice(i, j);
+    //     }
+    // }
     double M = arma::accu(lattice);
 
     return M;
@@ -151,10 +156,10 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
         
         // We reset the averaged value to the initial system 
         // after every cycle
-        double E_avg = E_sys;
-        double M_avg = M_sys;
+        // double E_avg = E_sys;
+        // double M_avg = M_sys;
 
-        Metropolis(lattice, E_sys, M_sys, E_avg, M_avg);
+        Metropolis(lattice, E_sys, M_sys);
 
         // When we pass the burning point we start registering the values
         if (k > N_burn){
@@ -183,8 +188,7 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
 
 // This is to run one iteration of the Metropolis algorithm
 // modify the lattice and update the energy and magnetization (only the current step)
-void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys,
-                       double &E_avg, double &M_avg){
+void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
     
     //  One cycle correspond to N spin flip attempt. 
     for (int n = 0; n < N; n++){
@@ -210,9 +214,9 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys,
         int dE = E_flip - E_noflip;
 
         // If we have a 2x2 lattice we 
-        if (L == 2){
-            dE /= 2.;
-        }
+        // if (L == 2){
+        //     dE /= 2.;
+        // }
 
         // Should always be -8, -4, 0, 4, 8 
         // std::cout << "dE is: " << dE << std::endl;

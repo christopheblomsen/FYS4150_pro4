@@ -33,5 +33,5 @@ struct Ising{
 
     arma::mat mcmc(int N_burn, int i, arma::mat data);
 
-    void Metropolis(arma::mat &lattice, double &E_sys, double &M_sys, double &E_avg, double &M_avg);
+    void Metropolis(arma::mat &lattice, double &E_sys, double &M_sys);
 };
