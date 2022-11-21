@@ -1,5 +1,5 @@
 // Build command
-// g++ -I include src/* main.cpp -o main -larmadillo
+// g++ -I include src/* main.cpp -o main -larmadillo -fopenmp
 //
 // Run command
 // ./main output_filename input_name.csv
@@ -45,8 +45,11 @@ int main(int argc, char** argv){
     int burn = input(4);
     std::vector<double> temperature = {input(5), input(6)};
 
+
+    // Problem 7
+    //////////////////////////////////////////////////////////////////////////////
     // MCMC parallel check
-    arma::vec temp = arma::linspace(temperature[0], temperature[1], 100);
+    arma::vec temp = arma::linspace(temperature[0], temperature[1], 20);
 
     auto start1 = std::chrono::high_resolution_clock::now();
     // parallize the for loop so over every temperature 
@@ -58,7 +61,7 @@ int main(int argc, char** argv){
 
         // create the environment and run the simulation
         Ising ise(L, T, order);
-        data = ise.mcmc(cycle, burn, data);
+        data = ise.mcmc(burn, cycle, data);
         // data.save("test_2"+std::to_string(T)+".bin");
     }
 
@@ -79,14 +82,14 @@ int main(int argc, char** argv){
 
         // create the environment and run the simulation
         Ising ise(L, T, order);
-        data = ise.mcmc(cycle, burn, data);
-        // data.save("test_serial"+std::to_string(T)+".bin");
+        data = ise.mcmc(burn, cycle, data);
+        data.save("test_serial"+std::to_string(T)+".bin");
         // std::cout << "temperature: " << T << std::endl;
     }
     auto finish2 = std::chrono::high_resolution_clock::now();
 
     std::cout << "Time for serial: " << std::chrono::duration_cast<std::chrono::seconds>(finish2-start2).count() << " s" << std::endl;
-
+    //////////////////////////////////////////////////////////////////////////////////
 
     // for (double temp : temperature){
     //     std::string temp_string = std::to_string(temp);

@@ -158,6 +158,7 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
 
         // When we pass the burning point we start registering the values
         if (k > N_burn){
+            // std::cout << "in" <<std::endl;
             data(0, index) = E_sys;
             data(1, index) = std::fabs(M_sys);
             data(2, index) = k;
