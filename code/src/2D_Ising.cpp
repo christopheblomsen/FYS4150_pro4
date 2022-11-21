@@ -1,5 +1,4 @@
 #include "2D_Ising.hpp"
-#include "omp.h"
 #include <iostream>
 #include <armadillo>
 
@@ -188,13 +187,13 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys,
     
     //  One cycle correspond to N spin flip attempt. 
     for (int n = 0; n < N; n++){
-        std::cout << "Iteration: " << n+1 << std::endl;
+        // std::cout << "Iteration: " << n+1 << std::endl;
 
         // Pick a random spin
         int i = arma::randi(arma::distr_param(0, L-1));
         int j = arma::randi(arma::distr_param(0, L-1));
-        std::cout << "i: " << i << std::endl;
-        std::cout << "j: " << j << std::endl;
+        // std::cout << "i: " << i << std::endl;
+        // std::cout << "j: " << j << std::endl;
 
 
         // to Calculate dE we first compute the energy around 
@@ -215,10 +214,10 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys,
         }
 
         // Should always be -8, -4, 0, 4, 8 
-        std::cout << "dE is: " << dE << std::endl;
-        std::cout << lattice << std::endl;
-        std::cout << "entering step verification" << std::endl;
-        std::cout << "" << std::endl;
+        // std::cout << "dE is: " << dE << std::endl;
+        // std::cout << lattice << std::endl;
+        // std::cout << "entering step verification" << std::endl;
+        // std::cout << "" << std::endl;
 
         // Verification of the new state. 
         if (dE <= 0){
@@ -227,19 +226,19 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys,
             (E_sys) += dE;
             (M_sys) += dM;
 
-            std::cout << "Change done (<=0)" << std::endl;
-            std::cout << "New energy is: " << E_sys << std::endl;
-            std::cout << "New M is: " << M_sys << std::endl; 
-            std::cout << lattice << std::endl;
-            std::cout << "" << std::endl;
+            // std::cout << "Change done (<=0)" << std::endl;
+            // std::cout << "New energy is: " << E_sys << std::endl;
+            // std::cout << "New M is: " << M_sys << std::endl; 
+            // std::cout << lattice << std::endl;
+            // std::cout << "" << std::endl;
         
         }
         else{
             double u = arma::randu();
             double p = std::exp(-beta * dE);
 
-            std::cout << "u is: " << u << std::endl;
-            std::cout << "p is: " << p << std::endl;
+            // std::cout << "u is: " << u << std::endl;
+            // std::cout << "p is: " << p << std::endl;
 
             if (u < p){
                 lattice(i, j) *= -1;
@@ -247,17 +246,17 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys,
                 (E_sys) += dE;
                 (M_sys) += dM;
 
-                std::cout << "Change done" << std::endl;
-                std::cout << "New energy is: " << E_sys << std::endl;
-                std::cout << "New M is: " << M_sys << std::endl; 
-                std::cout << lattice << std::endl;
-                std::cout << "" << std::endl;
+                // std::cout << "Change done" << std::endl;
+                // std::cout << "New energy is: " << E_sys << std::endl;
+                // std::cout << "New M is: " << M_sys << std::endl; 
+                // std::cout << lattice << std::endl;
+                // std::cout << "" << std::endl;
             }
-        std::cout << "No change" << std::endl;
-        std::cout << "energy is: " << E_sys << std::endl;
-        std::cout << "M is: " << M_sys << std::endl;
-        std::cout << lattice << std::endl;
-        std::cout << "" << std::endl;
+        // std::cout << "No change" << std::endl;
+        // std::cout << "energy is: " << E_sys << std::endl;
+        // std::cout << "M is: " << M_sys << std::endl;
+        // std::cout << lattice << std::endl;
+        // std::cout << "" << std::endl;
 
         }
 

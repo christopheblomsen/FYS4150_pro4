@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include "omp.h"
+#include "chrono"
 
 
 int main(int argc, char** argv){
@@ -43,28 +45,72 @@ int main(int argc, char** argv){
     int burn = input(4);
     std::vector<double> temperature = {input(5), input(6)};
 
-    for (double temp : temperature){
-        std::string temp_string = std::to_string(temp);
-        Ising ise(L, temp, order);
+    // MCMC parallel check
+    arma::vec temp = arma::linspace(temperature[0], temperature[1], 100);
 
-        // SEPARATE CHECK
-        // arma::mat lattice = ise.lattice_init(L);
-        // std::cout << lattice << std::endl;
-        // std::cout << "L is:" << ise.L << std::endl;
-        // double E = ise.energy(lattice, J);
-        // std::cout << "E_init:" << E << std::endl;
-
-        // double m = ise.magnetization(lattice);
-        // std::cout << "m init:" << m << std::endl;
-
-        // ise.Metropolis(lattice, E, m);
-
-
-        // mcmc check
+    auto start1 = std::chrono::high_resolution_clock::now();
+    // parallize the for loop so over every temperature 
+    #pragma omp parallel for
+    for (int t=0; t < temp.n_elem; t++){
+        // create the data 
         arma::mat data = arma::mat(3, (cycle - burn));
-        data = ise.mcmc(burn, cycle, data);
-        std::cout << "data: " << std::endl << data << std::endl;
-        data.save(filename+temp_string+".bin");
+        double T = temp[t];
+
+        // create the environment and run the simulation
+        Ising ise(L, T, order);
+        data = ise.mcmc(cycle, burn, data);
+        // data.save("test_2"+std::to_string(T)+".bin");
     }
+
+
+    auto finish1 = std::chrono::high_resolution_clock::now();
+
+
+    std::cout << "Time for parallel: " << std::chrono::duration_cast<std::chrono::seconds>(finish1-start1).count() << " s" << std::endl;
+
+    auto start2 = std::chrono::high_resolution_clock::now();
+    //Without parallelization
+    std::cout << "elem: " << temp.n_elem <<std::endl;
+
+    for (int t=0; t < temp.n_elem; t++){
+        // create the data 
+        arma::mat data = arma::mat(3, (cycle - burn));
+        double T = temp[t];
+
+        // create the environment and run the simulation
+        Ising ise(L, T, order);
+        data = ise.mcmc(cycle, burn, data);
+        // data.save("test_serial"+std::to_string(T)+".bin");
+        // std::cout << "temperature: " << T << std::endl;
+    }
+    auto finish2 = std::chrono::high_resolution_clock::now();
+
+    std::cout << "Time for serial: " << std::chrono::duration_cast<std::chrono::seconds>(finish2-start2).count() << " s" << std::endl;
+
+
+    // for (double temp : temperature){
+    //     std::string temp_string = std::to_string(temp);
+    //     Ising ise(L, temp, order);
+
+    //     // SEPARATE CHECK
+    //     // arma::mat lattice = ise.lattice_init(L);
+    //     // std::cout << lattice << std::endl;
+    //     // std::cout << "L is:" << ise.L << std::endl;
+    //     // double E = ise.energy(lattice, J);
+    //     // std::cout << "E_init:" << E << std::endl;
+
+    //     // double m = ise.magnetization(lattice);
+    //     // std::cout << "m init:" << m << std::endl;
+
+    //     // ise.Metropolis(lattice, E, m);
+
+
+    //     // mcmc check
+    //     // arma::mat data = arma::mat(3, (cycle - burn));
+    //     // data = ise.mcmc(burn, cycle, data);
+    //     // std::cout << "data: " << std::endl << data << std::endl;
+    //     // data.save(filename+temp_string+".bin");
+    
+    // }
     return 0;
 }
