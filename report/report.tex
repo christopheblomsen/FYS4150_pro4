@@ -82,7 +82,7 @@
 	%This is how we create an abstract section.
 	\begin{abstract}
 	We study the 2D ferromagnetic Ising Model with Monte Carlo Markov chain. We use the Metropolis algorithm to sample the probability distribution of the Ising model.
-	As proven in 1944 by Lars Onsager, we have a phase transition at the critical temperature $T_c(L=\infty)=2.269 \mathrm{J / k}$. We find a matching numerical 
+	As proven in 1944 by Lars Onsager$\colorbox{red}{Citation of his paper?}$, we have a phase transition at the critical temperature $T_c(L=\infty)=2.269 \mathrm{J / k}$. We find a matching numerical 
 	critical temperature $T_c(L=\infty) = 2.29 \pm 0.04$. To verify that the Metropolis algorithm is working correctly, we used the analytical solution in the case 
 	of 2x2 lattice. Additionnaly we look at the distribution of our energy normalized by spin $\epsilon$ for a 20x20 lattice with different temperatures. We find that
 	we temperature plays an important role in the shape of our distribution. Since we can only compute theoretical values when we reach equilibrium we used the "Burn-in" 
@@ -98,7 +98,9 @@
 	The Ising model is a statistical mechanics model that describes the ferromagnetism by a system of spins on a lattice. 
 	Ferromagnetism is a property of certain materials allowing it to form a permanent magnet for exemple. One important concept in the Ising model for dimension 
 	higher than 1 is phase transition. A phase transition is an extreme change in the physical properties. In our case, the model will go high magnetization to close to 
-	0 with increasing temperature. 
+	0 with increasing temperature. $\colorbox{red}{More detail about Ising model? Other use in science perhaps}$\\
+	There is no analytical solution for the Ising model in dimensions > 2. However, we can use the Monte Carlo Markov Chain (MCMC) algorithhm to simulate our model. 
+	MCMC was developped in the 40s by Stanislaw Ulam $\colorbox{red}{Citation of his paper?}$. The basic idea is to use randomness to solve deterministic problem. 
 
 	\section{Theory}\label{sec:theory}
 	% ===========================================
