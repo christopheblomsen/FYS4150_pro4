@@ -45,7 +45,7 @@ void Ising::unordered_lattice(int N, arma::vec spin, arma::mat &lattice){
 arma::mat Ising::lattice_init(int N){
     
     //Initialize all spin values
-    arma::vec spin = {-1, 1};
+    arma::vec spin = {-1., 1.};
     arma::mat lattice = arma::mat(N, N);
     
     if (order){
@@ -158,7 +158,7 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
         // after every cycle
 
         Metropolis(lattice, E_sys, M_sys);
-
+        
         // When we pass the burning point we start registering the values
         if (k > N_burn){
             // double M = magnetization(lattice);
