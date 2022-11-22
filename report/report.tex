@@ -35,7 +35,7 @@
 %% ----------------------------------------------------
 
 
-\documentclass[english,notitlepage,reprint,nofootinbib]{revtex4-1}  % defines the basic parameters of the document
+\documentclass[english,notitlepage,reprint,nofootinbib]{revtex4-2}  % defines the basic parameters of the document
 % For preview: skriv i terminal: latexmk -pdf -pvc filnavn
 % If you want a single-column, remove "reprint"
 
@@ -81,15 +81,21 @@
 	
 	%This is how we create an abstract section.
 	\begin{abstract}
-	  Lorem Ipsum
+	We study the 2D Ising Model with Monte Carlo Markov chain. We use the Metropolis algorithm to sample the probability distribution of the Ising model.
+	As proven in 1944 by Lars Onsager, we have a phase transition at the critical temperature $T_c(L=\infty)=2.269 \mathrm{J / k}$. We find a matching numerical 
+	critical temperature $T_c(L=\infty) = 2.29 \pm 0.04$. To verify that the Metropolis algorithm is working correctly, we used the analytical solution in the case 
+	of 2x2 lattice. Additionnaly we look at the distribution of our energy normalized by spin $\epsilon$ for a 20x20 lattice with different temperatures. We find that
+	we temperature plays an important role in the shape of our distribution. Since we can only compute theoretical values when we reach equilibrium we used the "Burn-in" 
+	method to determine the number of cycle needed to reach equilibrium. For a 20x20 lattice, we determine that around 10000 cycles is enough to reach equilibrium.
+	  
 	\end{abstract}
-	\maketitle
+	\maketitle	
 	
 	
 	% ===========================================
 	\section{Introduction} \label{sec:introduction}
 	%
-
+	Prétendre que t'aimes la vie dans le cas ou tu veux juste te buter sale merde. 
 
 	\section{Theory}\label{sec:theory}
 	% ===========================================
