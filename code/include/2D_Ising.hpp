@@ -23,9 +23,9 @@ struct Ising{
     // Function for periodic boundary
     int index(int i);
 
-    double energy(arma::mat lattice, int J=1, bool by_spin = false);
+    double energy(arma::mat &lattice, int J=1, bool by_spin = false);
 
-    double magnetization(arma::mat lattice, bool by_spin = false);
+    double magnetization(arma::mat &lattice, bool by_spin = false);
 
     double Cv(arma::vec E, int N, double T);
 

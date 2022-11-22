@@ -124,41 +124,47 @@ int main(){
     //////////////////////////////////////////////////////////////////////////////////
     // Problem 8 
     //////////////////////////////////////////////////////////////////////////////////
-    arma::vec L_list = {40, 60, 80, 100};
-    arma::vec temperature8 = arma::linspace(2.1, 2.4, 20);
-    int cycle8 = 60000;
-    int burn = 10000;
+    arma::vec L_list = {40};
+    arma::vec temperature8 = arma::linspace(2.1, 2.4, 10);
+    int cycle8 = 100000;
+    int burn = 50000;
 
     temperature8.save("temp_prob8.bin");
     
-    #pragma omp parallel for
+    #pragma omp parallel for collapse(2)
     for (int t=0; t < temperature8.n_elem; t++){
-        // We get the temperature
-        double T8 = temperature8[t];
+        for (int L : L_list){
+            double T8 = temperature8[t];
+            // We create the data
+            arma::mat data = arma::mat(3, (cycle8 - burn));
+            // We create the environment and run the simulation
+            Ising ise(L, T8);
+            data = ise.mcmc(burn, cycle8, data);
+            data.save("L"+std::to_string(L)+"_prob8_"+std::to_string(t)+".bin");
+        }
+        // // We create the environnemt for the different temperatures
+        // Ising ising40(L_list[0], T8);
+        // Ising ising60(L_list[1], T8);
+        // Ising ising80(L_list[2], T8);
+        // Ising ising100(L_list[3], T8);        
 
-        // We create the environnemt for the different temperatures
-        Ising ising40(L_list[0], T8);
-        Ising ising60(L_list[1], T8);
-        Ising ising80(L_list[2], T8);
-        Ising ising100(L_list[3], T8);        
+        // // We create the data 
+        // arma::mat data40 = arma::mat(3, cycle8 - burn);
+        // arma::mat data60 = arma::mat(3, cycle8 - burn);
+        // arma::mat data80 = arma::mat(3, cycle8 - burn);
+        // arma::mat data100 = arma::mat(3, cycle8 - burn);
 
-        // We create the data 
-        arma::mat data40 = arma::mat(3, cycle8 - burn);
-        arma::mat data60 = arma::mat(3, cycle8 - burn);
-        arma::mat data80 = arma::mat(3, cycle8 - burn);
-        arma::mat data100 = arma::mat(3, cycle8 - burn);
+        // // Run the simulation
+        // data40 = ising40.mcmc(burn, cycle8, data40);
+        // data60 = ising60.mcmc(burn, cycle8, data60);
+        // data80 = ising80.mcmc(burn, cycle8, data80);
+        // data100 = ising100.mcmc(burn, cycle8, data100);
 
-        // Run the simulation
-        data40 = ising40.mcmc(burn, cycle8, data40);
-        data60 = ising60.mcmc(burn, cycle8, data60);
-        data80 = ising80.mcmc(burn, cycle8, data80);
-        data100 = ising100.mcmc(burn, cycle8, data100);
-
-        // Save the data 
-        data40.save("L40_prob8_"+std::to_string(t)+".bin");
-        data60.save("L60_prob8_"+std::to_string(t)+".bin");
-        data80.save("L80_prob8_"+std::to_string(t)+".bin");
-        data100.save("L100_prob8_"+std::to_string(t)+".bin");
+        // // Save the data 
+        // data40.save("L40_prob8_"+std::to_string(t)+".bin");
+        // data60.save("L60_prob8_"+std::to_string(t)+".bin");
+        // data80.save("L80_prob8_"+std::to_string(t)+".bin");
+        // data100.save("L100_prob8_"+std::to_string(t)+".bin");
     }
 
 

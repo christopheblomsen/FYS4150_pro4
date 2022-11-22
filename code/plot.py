@@ -34,16 +34,21 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 # plt.rcParams.update(params)
 
 def compute_heat_capacity(energy, T, L, kb=1):
-    return 1 / (L*L) * 1 / (kb * T*T) * (np.var(energy))
+    return np.var(energy) / (L*L * kb * T*T) 
 
 def compute_m_abs(magnetisation, L):
-    return np.mean(np.abs(magnetisation)) / (L*L)
+    return np.mean(np.abs(magnetisation)) / (L*L) 
 
 def compute_epsilon(energy, L):
     return np.mean(energy) / (L*L)
 
 def compute_susceptibility(magnetisation, T, L, kb=1):
-    return 1 / (L*L) * 1 / (kb * T) * np.var(np.abs(magnetisation))
+    # m2 = np.mean(magnetisation**2)
+    # m = np.mean(np.abs(magnetisation))
+    return np.var(np.abs(magnetisation)) / (L*L * kb * T)
+
+
+
 
 
 def Z(beta):
@@ -223,99 +228,111 @@ os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code")
 temperature = pa.mat()
 temperature.load("temp_prob8.bin")
 
-eps40 = np.zeros(50)
-m40 = np.zeros(50)
-cv40 = np.zeros(50)
-chi40 = np.zeros(50)
 
-eps60 = np.zeros(50)
-m60 = np.zeros(50)
-cv60 = np.zeros(50)
-chi60 = np.zeros(50)
+taille = 10
 
-eps80 = np.zeros(50)
-m80 = np.zeros(50)
-cv80 = np.zeros(50)
-chi80 = np.zeros(50)
+temperature = np.array(temperature).reshape(taille)
 
-eps100 = np.zeros(50)
-m100 = np.zeros(50)
-cv100 = np.zeros(50)
-chi100 = np.zeros(50)
+eps40 = np.zeros(taille)
+m40 = np.zeros(taille)
+cv40 = np.zeros(taille)
+chi40 = np.zeros(taille)
+
+eps60 = np.zeros(taille)
+m60 = np.zeros(taille)
+cv60 = np.zeros(taille)
+chi60 = np.zeros(taille)
+
+eps80 = np.zeros(taille)
+m80 = np.zeros(taille)
+cv80 = np.zeros(taille)
+chi80 = np.zeros(taille)
+
+eps100 = np.zeros(taille)
+m100 = np.zeros(taille)
+cv100 = np.zeros(taille)
+chi100 = np.zeros(taille)
 
 for k in range(len(temperature)):
     T = temperature[k]
     # Load the data for one temperature
     data8_40 = pa.mat()
     data8_40.load(f"L40_prob8_{k}.bin")
+    data8_40 = np.array(data8_40)
 
-    data8_60 = pa.mat()
-    data8_60.load(f"L60_prob8_{k}.bin")
+    # data8_60 = pa.mat()
+    # data8_60.load(f"L60_prob8_{k}.bin")
+    # data8_60 = np.array(data8_60)
 
-    data8_80 = pa.mat()
-    data8_80.load(f"L80_prob8_{k}.bin")
-
-    data8_100 = pa.mat()
-    data8_100.load(f"L100_prob8_{k}.bin")
+    # data8_80 = pa.mat()
+    # data8_80.load(f"L80_prob8_{k}.bin")
+    # data8_80 = np.array(data8_80)
+    
+    # data8_100 = pa.mat()
+    # data8_100.load(f"L100_prob8_{k}.bin")
+    # data8_100 = np.array(data8_100)
 
     # Calculate the four quantities
-    eps40[k] = compute_epsilon(data8_40[0,:], 40)
-    m40[k] = compute_m_abs(data8_40[1,:], 40)
-    cv40[k] = compute_heat_capacity(data8_40[0,:],  T, 40)
-    chi40[k] = compute_susceptibility(data8_40[1,:],  T, 40)
+    eps40[k] = compute_epsilon(data8_40[0,:], 40.)
+    m40[k] = compute_m_abs(data8_40[1,:], 40.)
+    cv40[k] = compute_heat_capacity(data8_40[0,:],  T, 40.)
+    chi40[k] = compute_susceptibility(data8_40[1,:],  T, 40.)
 
-    eps60[k] = compute_epsilon(data8_60[0,:], 60)
-    m60[k] = compute_m_abs(data8_60[1,:], 60)
-    cv60[k] = compute_heat_capacity(data8_60[0,:],  T, 60)
-    chi60[k] = compute_susceptibility(data8_60[1,:],  T, 60)
+    # eps60[k] = compute_epsilon(data8_60[0,:], 60.)
+    # m60[k] = compute_m_abs(data8_60[1,:], 60.)
+    # cv60[k] = compute_heat_capacity(data8_60[0,:],  T, 60.)
+    # chi60[k] = compute_susceptibility(data8_60[1,:],  T, 60.)
 
-    eps80[k] = compute_epsilon(data8_80[0,:], 80)
-    m80[k] = compute_m_abs(data8_80[1,:], 80)
-    cv80[k] = compute_heat_capacity(data8_80[0,:],  T, 80)
-    chi80[k] = compute_susceptibility(data8_80[1,:],  T, 80)
+    # eps80[k] = compute_epsilon(data8_80[0,:], 80.)
+    # m80[k] = compute_m_abs(data8_80[1,:], 80.)
+    # cv80[k] = compute_heat_capacity(data8_80[0,:],  T, 80.)
+    # chi80[k] = compute_susceptibility(data8_80[1,:],  T, 80.)
 
-    eps100[k] = compute_epsilon(data8_100[0,:], 100)
-    m100[k] = compute_m_abs(data8_100[1,:], 100)
-    cv100[k] = compute_heat_capacity(data8_100[0,:],  T, 100)
-    chi100[k] = compute_susceptibility(data8_100[1,:],  T, 100)
+    # eps100[k] = compute_epsilon(data8_100[0,:], 100.)
+    # m100[k] = compute_m_abs(data8_100[1,:], 100.)
+    # cv100[k] = compute_heat_capacity(data8_100[0,:],  T, 100.)
+    # chi100[k] = compute_susceptibility(data8_100[1,:],  T, 100.)
 
+import sys
+np.set_printoptions(threshold=sys.maxsize)
 
+print(data8_40[1,:])
 plt.figure()
-plt.plot(temperature, cv100, 'k', label="100")
-plt.plot(temperature, cv80, 'o', label="80")
-plt.plot(temperature, cv60, 'b', label="60")
+# plt.plot(temperature, cv100, 'k', label="100")
+# plt.plot(temperature, cv80, 'o', label="80")
+# plt.plot(temperature, cv60, 'b', label="60")
 plt.plot(temperature, cv40, 'g', label="40")
 plt.legend(loc='best')
 plt.xlabel("Temperature [J/k]")
 plt.ylabel(r"$C_v$")
 
 plt.figure()
-plt.plot(temperature, chi100, 'k', label="100")
-plt.plot(temperature, chi80, 'o', label="80")
-plt.plot(temperature, chi60, 'b', label="60")
+# plt.plot(temperature, chi100, 'k', label="100")
+# plt.plot(temperature, chi80, 'o', label="80")
+# plt.plot(temperature, chi60, 'b', label="60")
 plt.plot(temperature, chi40, 'g', label="40")
 plt.legend(loc='best')
 plt.xlabel("Temperature [J/k]")
 plt.ylabel(r"$\chi$")
 
 plt.figure()
-plt.plot(temperature, m100, 'k', label="100")
-plt.plot(temperature, m80, 'o', label="80")
-plt.plot(temperature, m60, 'b', label="60")
+# plt.plot(temperature, m100, 'k', label="100")
+# plt.plot(temperature, m80, 'o', label="80")
+# plt.plot(temperature, m60, 'b', label="60")
 plt.plot(temperature, m40, 'g', label="40")
 plt.legend(loc='best')
 plt.xlabel("Temperature [J/k]")
 plt.ylabel(r"$|m|$")
 
 plt.figure()
-plt.plot(temperature, eps100, 'k', label="100")
-plt.plot(temperature, eps80, 'o', label="80")
-plt.plot(temperature, eps60, 'b', label="60")
+# plt.plot(temperature, eps100, 'k', label="100")
+# plt.plot(temperature, eps80, 'o', label="80")
+# plt.plot(temperature, eps60, 'b', label="60")
 plt.plot(temperature, eps40, 'g', label="40")
 plt.legend(loc='best')
 plt.xlabel("Temperature [J/k]")
 plt.ylabel(r"$\epsilon$")
 
-
+# print(temperature)
 
 plt.show()

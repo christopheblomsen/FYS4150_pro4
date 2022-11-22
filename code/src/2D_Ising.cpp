@@ -62,7 +62,7 @@ int Ising::index(int i){
 }
 
 
-double Ising::energy(arma::mat lattice, int J, bool by_spin){
+double Ising::energy(arma::mat &lattice, int J, bool by_spin){
     // by_spin if we want to normalize it by spin set to false by default
     int N = lattice.n_rows;
     double E = 0.;
@@ -89,7 +89,7 @@ double Ising::energy(arma::mat lattice, int J, bool by_spin){
 }
 
 
-double Ising::magnetization(arma::mat lattice, bool by_spin){
+double Ising::magnetization(arma::mat &lattice, bool by_spin){
     // Calculate the magnetization |M| or |m| depending on by_spin, by default
     // is |M|
 
@@ -156,13 +156,12 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
         
         // We reset the averaged value to the initial system 
         // after every cycle
-        // double E_avg = E_sys;
-        // double M_avg = M_sys;
 
         Metropolis(lattice, E_sys, M_sys);
 
         // When we pass the burning point we start registering the values
         if (k > N_burn){
+            // double M = magnetization(lattice);
             // std::cout << "in" <<std::endl;
             data(0, index) = E_sys;
             data(1, index) = M_sys;
@@ -189,7 +188,7 @@ arma::mat Ising::mcmc(int N_burn, int i, arma::mat data){
 // This is to run one iteration of the Metropolis algorithm
 // modify the lattice and update the energy and magnetization (only the current step)
 void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
-    
+
     //  One cycle correspond to N spin flip attempt. 
     for (int n = 0; n < N; n++){
         // std::cout << "Iteration: " << n+1 << std::endl;
@@ -262,18 +261,8 @@ void Ising::Metropolis(arma::mat &lattice, double &E_sys, double &M_sys){
         // std::cout << "M is: " << M_sys << std::endl;
         // std::cout << lattice << std::endl;
         // std::cout << "" << std::endl;
-
         }
-
-        // Even said useless
-        // // update the average
-        // E_avg += E_sys;
-        // M_avg += M_sys;
     }
-
-    // Take the average
-    // E_avg = E_avg / (N + 1);
-    // M_avg = M_avg / (N + 1);
 }
 // Ordered and random in init, plotting in python
 //
