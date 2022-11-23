@@ -352,7 +352,31 @@
 	% ===========================================
 	\section{Discussion}\label{sec:discussion}
 	%
-
+	\subsection{Analytical and Numerical for L=2}\label{subsec:dis 2x2}
+	
+	Figures \ref{fig:chi4} and \ref{fig:cv4} shows the expected value of the susceptibility
+	and the heat capacity for different MCMC cycle. We see that we reach quickly the theoretical
+	value in 2000 cycles. Increasing the number of cycle will provide better and better 
+	approximation as expected. However we notice that we never are perfectly constant and adding
+	more cycles does not gives us the assurance that we would reach the theoretical value. This 
+	can be explained due to the randomness of our algorithms. Indeed, if we start in a low probability state we can spend some time equilibrating which would weight heavily on the 
+	expected value. This two figures shows that the burn in method would improve significantly 
+	the numerical value.
+	
+	
+	\subsection{Burn-in}\label{subsec:dis burnin}
+	
+	We know take a look at the equilibration time. There are many ways of calculating the required
+	time for our algorithm to reach equilibrium \colorbox{red}{some citation}. We chose 
+	to implement the burn-in method. This method consist in letting our code run for a certain number
+	of cycle $N_{\rm burn}$ and once we reach the $N_{\rm burn} + 1$ cycle we consider that we have reached equilibrium and we start saving the data of interest.    
+	
+	
+	\subsection{Distribution of $\epsilon$}\label{subsec:dis epsilon}
+	
+	\subsection{Parallelization}\label{subsec: dis parallelization}
+	
+	\subsection{Phase transition and critical temperature}\label{subsec: dis phase transition}
 	
 	% ===========================================
 	\section{Conclusion}\label{sec:conclusion}
