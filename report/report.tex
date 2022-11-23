@@ -187,7 +187,7 @@
 		\chi &= \frac{<M^2> - <|M|>^2}{NKT} \label{eq:susceptibility}
 	\end{align}
  	
-	\subsection{2x2 analytical solution}
+	\subsection{2x2 analytical solution}\label{subsec:analytical solution}
 	
 	Since it gets quickly impossible to calculate the probability distribution due to the 
 	partition function. We will first solve the 2x2 case where we only have $2^4=16$ possible
@@ -234,7 +234,7 @@
 	\end{align*}
 	
 	
-	\subsection{Phase transition}
+	\subsection{Phase transition}\label{subsec:phase transition}
 	One of the most interesting physical property of the 2D Ising model is the phase transition.
 	It means that for a certain critical temperature $T_c$ our lattice will suddenly magnetizes. For an infinite size model Lars Onsager found in 1944 the theoretical value of 
 	
@@ -278,9 +278,76 @@
 	% ===========================================
 	\section{Results}\label{sec:results}
 	%
+	\subsection{2x2 numerical simulation}\label{subsec: 2x2 numerical}
+	We used $T=1 J/k$ and ran the simulation for \{500, 1000, 2000, 3000, 4000, 5000, 6000, 
+	7000, 8000, 9000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000\}
+	cycles and $L=2$. We computed the analytical solution described in Section \ref{subsec:analytical solution}. 
+	Figures \ref{fig:chi4} and \ref{fig:cv4} shows the expected value of $\chi$ and $C_v$ for different number of cycle done. The theoretical values is plotted in dashed line. We did
+	not represented $<m>$ or $<E>$ as they are a necessity to compute $\chi$ and $C_v$ so 
+	finding good results for the last two shows that we have evaluated correctly the other
+	quantities. 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.55]{figures/chi_problem4.pdf}
+		\caption{}
+		\label{fig:chi4}
+	\end{figure}
 
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.55]{figures/CV_problem4.pdf}
+		\caption{}
+		\label{fig:cv4}
+	\end{figure}
 	
+	\subsection{Burn-in time estimation}\label{subsec: burn in estimation}
 	
+	For the Burn-in testing we took the same number of cycle as Section \ref{subsec: 2x2 numerical},
+	with $L=20$ instead of $L=4$. We used two different temperatures $T_1=1 J/k$ and $T_2=2.4 J/k$
+	starting from ordered (all spin being 1) and random. We plotted the expected value of $m$ 
+	and $\epsilon$ according to the number of cycles. The results are presented in 
+	Figures \ref{fig:eps5} and \ref{fig:m5}. 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.55]{figures/epsilon_problem5.pdf}
+		\caption{}
+		\label{fig:eps5}
+	\end{figure}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.55]{figures/m_problem5}
+		\caption{}
+		\label{fig:m5}
+	\end{figure}
+
+	\subsection{Distribution probability of $\epsilon$}\label{subsec:dist probability}
+	
+	For the probability distribution of $\epsilon$ we took the data set used in section 
+	\ref{subsec: burn in estimation}, so 100000 cycles computed for both temperatures 
+	without any burn-in time and starting from random position. Figures \ref{fig:hist1}
+	and \ref{fig:hist2} show the histogram of our distribution for their temperature. 
+	We also computed the variance and found $\sigma\approx0.00011$ for $T=1 J/k$ and 
+	$\sigma\approx0.02023$ for $T=2.4 J/k$.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.55]{figures/Histo_T1.pdf}
+		\caption{}
+		\label{fig:hist1}
+	\end{figure}
+
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.55]{figures/Histo_T2.pdf}
+		\caption{}
+		\label{fig:hist2}
+	\end{figure}
+
+	\subsection{Phase Transition}\label{subsec:num phase transition}
+
+
 	% ===========================================
 	\section{Discussion}\label{sec:discussion}
 	%
