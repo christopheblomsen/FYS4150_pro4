@@ -178,18 +178,26 @@
 		<A> = \sum_{X}A(X)p(X) \label{eq:expectation value}
 	\end{equation} 
 	
-	We can then apply eq. \ref{eq:expectation value} to our observables. 
+	We can then apply eq. \ref{eq:expectation value} to our observables and we can define two 
+	values of interest, $C_v$ and $\chi$. The first one is he heat capacity and $\chi$ is the
+	magnetic susceptibility 
+	
+	\begin{align}
+		C_v &= \frac{<E^2> - <E>^2}{NkT^2} \label{eq:heat_capacity} \\
+		\chi &= \frac{<M^2> - <|M|>^2}{NKT} \label{eq:susceptibility}
+	\end{align}
  	
 	\subsection{2x2 analytical solution}
 	
 	Since it gets quickly impossible to calculate the probability distribution due to the 
 	partition function. We will first solve the 2x2 case where we only have $2^4=16$ possible
 	$\textbf{s}$. 
+	
 	\begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		\# $s_i=1$ & E & M & degeneracy \\
+		\# $s_i=1$ & E [J/k] & M[1/J] & degeneracy \\
 		\hline
 		\hline
 		0 & -4 &  -4 &  1  \\
@@ -210,11 +218,54 @@
 	
 	\begin{equation}
 		Z = 12 + 4\cosh(8\beta) \label{eq:Analytical_partition} 
-	\end{equation}
+	\end{equation}	
 
 	
+	With Table \ref{tab:summary2x2}, eq. \ref{eq:Analytical_partition} and \ref{eq:expectation value} we obtain the following relations 
+	
+	\begin{align*} \label{eq:sol}
+		<E> &= \frac{-32\sinh(8\beta)}{Z}  \\
+		<\epsilon> &= \frac{<E>}{4} = \frac{-8\sinh(8\beta)}{Z} \\
+		<E^2> &= \frac{256 \cosh(8\beta)}{Z} \\
+		<M> &= \frac{32}{Z} (2 + e^{8\beta}) \\
+		<M^2> &= \frac{32}{Z} (1 + e^{8\beta}) \\
+		<C_v> &= \frac{<E^2> - <E>^2}{4} \\
+		<\chi> &=  \frac{<M^2> - <|M|>^2}{4}
+	\end{align*}
+	
+	
+	\subsection{Phase transition}
+	One of the most interesting physical property of the 2D Ising model is the phase transition.
+	It means that for a certain critical temperature $T_c$ our lattice will suddenly magnetizes. For an infinite size model Lars Onsager found in 1944 the theoretical value of 
+	
+	\begin{equation}
+		T_c(L=\infty)=\frac{2}{log(1 + \sqrt{2})} J/k \approx 2.269 J/k \label{Tc_theo}
+	\end{equation}
+	
+	Another important aspect of phase transition is that different system exhibit similar 
+	behavior around the critical temperature. This is known as the critical exponents. For the 
+	finite size we have \colorbox{red}{Probably quote Morten (found in project description)}. 
+	
+	\begin{equation}
+		\xi \propto |T - T_c(L=\infty)|^{-\nu} \label{eq:critical exponent}
+	\end{equation}
+	
+	with critical exponent $\nu=1$, $\xi$ is the correlation length and the largest possible 
+	value is $\xi=L$, which we associate with the critical temperature of our system. \\
+	
+	With our finite critical temperature $T_c(L)$  we can estimate numerically the infinite
+	critical temperature with the scaling relation 
+	
+	\begin{equation}
+		T_c(L) = aL^{-1} + T_c(L=\infty) \label{eq:scaling relation}
+	\end{equation}
+	
+	a is a constant. This allows us to perform a linear regression to find approximate value 
+	of the slope (a) and the intersect point, $T_c(L=\infty)$.
 	
 	% ===========================================
+	
+	
 	\section{Methods}\label{sec:methods}
 	%
 	We will use
