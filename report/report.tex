@@ -347,7 +347,8 @@
 
 	\subsection{Phase Transition}\label{subsec:num phase transition}
 
-
+	MOM! IT IS NOT JUST A PHASE!!!!!
+	
 	% ===========================================
 	\section{Discussion}\label{sec:discussion}
 	%
@@ -355,7 +356,18 @@
 	
 	% ===========================================
 	\section{Conclusion}\label{sec:conclusion}
-
+	We have studied the 2D Ising model with the Monte Carlo Markov Chain algorithm 
+	using the Metropolis algorithm to sample the spin configuration. We found different 
+	distribution of $\epsilon$ for different temperature and found out that it plays 
+	an important role in the distribution's shape. The main focus on this paper is the 
+	phase transition. For different lattice size we iterated over four different lattice 
+	size $L=$\{40, 60, 80, 100 \}, used the MCMC algorithm to compute the expected values 
+	of $\chi$ and $C_v$. This allowed us to found a critical temperature of $T_c(L=\infty)$
+	to be $ 2.29 \pm 0.04 J/k $ where the error is calculated via the fitting function 
+	\textit{linregress} from the \textbf{scipy} library. The numerical value is in the range
+	of the theoretical value $T_{c}^{\rm th} \approx 2.269 J/k$.
+	
+	
 	\onecolumngrid
 	
 	%\bibliographystyle{apalike}
