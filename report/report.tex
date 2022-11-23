@@ -47,7 +47,7 @@
 %% I recommend downloading TeXMaker, because it includes a large library of the most common packages.
 
 \usepackage{physics,amssymb}  % mathematical symbols (physics imports amsmath)
-\include{amsmath}
+\usepackage{amsmath}
 \usepackage{graphicx}         % include graphics such as plots
 \usepackage{xcolor}           % set colors
 \usepackage{hyperref}         % automagic cross-referencing
@@ -74,7 +74,7 @@
 
 \begin{document}
 	
-	\title{Looking at the Ising problem with Monte Carlo Markov chain}  % self-explanatory
+	\title{Simulation of the 2D Ising model with Monte Carlo Markov Chain}  % self-explanatory
 	\author{} % self-explanatory
 	\date{\today}                             % self-explanatory
 	\noaffiliation                            % ignore this, but keep it.
@@ -83,7 +83,7 @@
 	\begin{abstract}
 	We study the 2D ferromagnetic Ising Model with Monte Carlo Markov chain. We use the Metropolis algorithm to sample the probability distribution of the Ising model.
 	As proven in 1944 by Lars Onsager$\colorbox{red}{Citation of his paper?}$, we have a phase transition at the critical temperature $T_c(L=\infty)=2.269 \mathrm{J / k}$. We find a matching numerical 
-	critical temperature $T_c(L=\infty) = 2.29 \pm 0.04$. To verify that the Metropolis algorithm is working correctly, we used the analytical solution in the case 
+	critical temperature $T_c(L=\infty) = 2.29 \pm 0.04 \mathrm{J / k}$. To verify that the Metropolis algorithm is working correctly, we used the analytical solution in the case 
 	of 2x2 lattice. Additionnaly we look at the distribution of our energy normalized by spin $\epsilon$ for a 20x20 lattice with different temperatures. We find that
 	we temperature plays an important role in the shape of our distribution. Since we can only compute theoretical values when we reach equilibrium we used the "Burn-in" 
 	method to determine the number of cycle needed to reach equilibrium. For a 20x20 lattice, we determine that around 10000 cycles is enough to reach equilibrium.
@@ -96,13 +96,124 @@
 	\section{Introduction} \label{sec:introduction}
 	%
 	The Ising model is a statistical mechanics model that describes the ferromagnetism by a system of spins on a lattice. 
-	Ferromagnetism is a property of certain materials allowing it to form a permanent magnet for exemple. One important concept in the Ising model for dimension 
+	Ferromagnetism is a property of certain materials allowing it to form a permanent magnet for example. One important concept in the Ising model for dimension 
 	higher than 1 is phase transition. A phase transition is an extreme change in the physical properties. In our case, the model will go high magnetization to close to 
 	0 with increasing temperature. $\colorbox{red}{More detail about Ising model? Other use in science perhaps}$\\
-	There is no analytical solution for the Ising model in dimensions > 2. However, we can use the Monte Carlo Markov Chain (MCMC) algorithhm to simulate our model. 
-	MCMC was developped in the 40s by Stanislaw Ulam $\colorbox{red}{Citation of his paper?}$. The basic idea is to use randomness to solve deterministic problem. 
+	
+	There is no analytical solution for the Ising model in dimensions $>$ 2. However, we can use the Monte Carlo Markov Chain (MCMC) algorithm to simulate our model. 
+	MCMC was developed in the 40s by Stanislaw Ulam and Jon Von Neumann $\colorbox{red}{Citation of his paper?}$. The basic idea is to use randomness to solve deterministic problem and as shown great 
+	results in many situations $\colorbox{red}{some example?}$ in computational physics. In this
+	paper we will apply the Monte Carlo methods to solve the 2D Ising Model and we will use the 
+	Metropolis algorithm to sample the distribution. As explained in more details in section
+	\ref{sec:theory} we will use the relation between finite lattice and infinite lattice to 
+	estimate the critical temperature, $T_c(L=\infty)$ solved analytically by Lars Onsager in 1944. \\
+	
+	In section \ref{sec:theory}, we will introduce a formal explanation of the Ising Model 
+	with the analytical solution for the 2x2 case used as a benchmark for our algorithm. In the
+	next section \ref{sec:methods} we will discuss the numerical methods and the algorithms 
+	used. Section \ref{sec:results} and section \ref{sec:discussion} respectively presents our
+	results from our simulation and an analysis of them. Finally section \ref{sec:conclusion} summarize the main points of this paper.   
 
 	\section{Theory}\label{sec:theory}
+	\subsection{2D Ising Model} \label{subsec:Ising}
+	The 2D Ising model is a 2 dimensional lattice of equal length and row (L) compose of spins
+	$s_i$. So an lattice of size L will wield $\rm LxL=N$ spins. Each spin can take one of the
+	following values $\{-1,	1\}$ representing their magnetic dipole. Every spin can interact 
+	with their next neighbor meaning that every spin can have up to four interactions. One 
+	important detail in physics is what to do with the boundaries. In our case we will consider 
+	a periodic boundary condition. This means that we will always consider four interactions
+	for each spin. This is the geometrical equivalent of having a lattice in the shape of a 
+	torus. We will denote the spin configuration by $\textbf{s}=\{s_1, s_2, ..., s_N\}$. This allows us 
+	to write the Hamiltonian 
+	
+	\begin{equation}
+		H(\textbf{s}) = -J \sum_{<kl>} s_ks_l + h \sum_{i=1}^{N} s_i \label{eq:hamilton}
+	\end{equation}
+	
+	Eq. \ref{eq:hamilton} is composed of two terms. The first one is the contribution of every 
+	neighbors. $<kl>$ represents the neighboring pairs of k and l. $J$ is the coupling constant 
+	and represent the strength of spin interaction. In this paper every results have been 
+	produce with $J=1$. The second term is here to account for a potential external magnetic 
+	field with $h$ acting as the strength of this magnetic field. We will not consider an 
+	external magnetic field in this paper so $h=0$ and eq. \ref{eq:hamilton} becomes
+	
+	\begin{equation}
+		H(\textbf{s}) = -J \sum_{<kl>} s_ks_l \label{eq:Hamiltonian}
+	\end{equation}
+	
+	In statistical mechanics we use probability and observables. In our problem we have two 
+	observables the magnetization and the energy respectively 
+	
+	\begin{align}
+		M(\textbf{s}) &= \sum_{i=1} s_i \label{eq:M}\\
+		E(\textbf{s}) &= H(\textbf{s}) = -J \sum_{<kl>} s_ks_l \label{eq:E}
+	\end{align}
+
+	$M$ is the magnetization summing all spins in the lattice. Since we will study these 
+	observable for different lattice size we introduce the normalized by spin magnetization and
+	energy 
+	
+	\begin{align}
+		m(\textbf{s}) &= \frac{M(\textbf{s})}{N} \label{eq:m} \\   
+		\epsilon(\textbf{s}) &= \frac{E(\textbf{s})}{N}  \label{eq:epsilon}
+	\end{align}
+
+	
+	Given a temperature $T$ to determine the probability of being in the configuration
+	$\textbf{s}$ we will use the Boltzmann distribution with the partition function $Z$
+	
+	\begin{align}
+		p(\textbf{s},T) &= \frac{1}{Z} e^{-\beta E(\textbf{s})} \label{eq:B_probability} \\
+		Z &= \sum_{\text{\textbf{s}}} e^{-\beta E(\textbf{s})} \label{eq:partition_fun}
+	\end{align}
+
+	where $\beta = \frac{1}{kT}$, $k$ the Boltzmann constant. the summation for the partition
+	function means that we iterate over every possible s\textbf{s}. This numbers scale as $2^N$
+	showing with analytical calculation of the partition for big lattice becomes quickly 
+	impossible. \\
+	
+	In statistical mechanics we can only experimentally calculate the averaged values of our 
+	observable. Meaning that for a discrete observable $A(X)$ with probability $p(X)$ we have 
+	\begin{equation}
+		<A> = \sum_{X}A(X)p(X) \label{eq:expectation value}
+	\end{equation} 
+	
+	We can then apply eq. \ref{eq:expectation value} to our observables. 
+ 	
+	\subsection{2x2 analytical solution}
+	
+	Since it gets quickly impossible to calculate the probability distribution due to the 
+	partition function. We will first solve the 2x2 case where we only have $2^4=16$ possible
+	$\textbf{s}$. 
+	\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\# $s_i=1$ & E & M & degeneracy \\
+		\hline
+		\hline
+		0 & -4 &  -4 &  1  \\
+		1 & 0&   -2&   4  \\ 
+		2 & 0 & 0&  4  \\
+		2 & 4 & 0 &  2 \\
+		3 & 0  & 2 & 4 \\
+		4 & -4 & 4 & 1 \\
+		\hline
+	\end{tabular}
+	\caption{ Summary of all possible energy E, magnetization M and the degeneracy is the 
+	number of spin configuration with the same characteristic} \label{tab:summary2x2}
+	\end{table} 
+	
+	Table \ref{tab:summary2x2} shows all possibility in the 2x2 case and we see that summing all
+	of the degeneracy gives us 16 assuring us that we covered every single possibility. Now that
+	we have found these values. We can proceed in the calculation of the partition function
+	
+	\begin{equation}
+		Z = 12 + 4\cosh(8\beta) \label{eq:Analytical_partition} 
+	\end{equation}
+
+	
+	
 	% ===========================================
 	\section{Methods}\label{sec:methods}
 	%
