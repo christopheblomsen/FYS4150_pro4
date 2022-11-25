@@ -65,7 +65,7 @@ def avg_E2(beta):
     return 256/Z(beta) * np.cosh(8*beta) 
 
 def avg_M(beta):
-    return 8/Z(beta) * (2 + np.exp(8*beta))
+    return 32/Z(beta) * (2 + np.exp(8*beta))
 
 def avg_M2(beta):
     return 32/Z(beta) * (1 + np.exp(8*beta))
@@ -80,7 +80,8 @@ beta = 1
 
 
 
-os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code/data")
+#os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code/data")
+os.chdir(r"data")
 
 # # Create the arrays for problem 4
 # epsilon = np.zeros(20)
@@ -102,13 +103,13 @@ epsilon2_rdm = np.zeros(20)
 m2_rdm = np.zeros(20)
 
 # list for every number of cycle computed
-list = ["500", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000"
+list_ = ["500", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000"
 , "10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000", "100000"]
 
 # # to access the correct location in the array
 index = 0
 
-for i in list:
+for i in list_:
 #     # Problem 4
 #     data = pa.mat()    
 #     data.load(f"L2_T1_{i}_cycles.bin")
@@ -144,11 +145,11 @@ for i in list:
 
 
 # # Plot Problem 4
-test = list[::3]
+test = list_[::3]
 
 # fig, ax = plt.subplots()
-# ax.plot(list, Chi, 'ro-', label='$\chi$')
-# ax.hlines(chi(1)/4, list[0], list[-1], 'k', linestyles='dashed', label=r'$\chi$ exact')
+# ax.plot(list_, Chi, 'ro-', label='$\chi$')
+# ax.hlines(chi(1)/4, list_[0], list_[-1], 'k', linestyles='dashed', label=r'$\chi$ exact')
 # ax.set_xticks(test)
 # ax.set_xticklabels(test)
 # ax.legend(loc='best')
@@ -158,8 +159,8 @@ test = list[::3]
 # # fig.savefig("chi_problem4.pdf")
 
 # fig, ax = plt.subplots()
-# ax.plot(list, cv, 'ro-', label='cv')
-# ax.hlines(CV(1), list[0], list[-1], 'k', linestyles='dashed', label='cv exact')
+# ax.plot(list_, cv, 'ro-', label='cv')
+# ax.hlines(CV(1), list_[0], list_[-1], 'k', linestyles='dashed', label='cv exact')
 # ax.set_xticks(test)
 # ax.set_xticklabels(test)
 # ax.legend(loc='best')
@@ -172,10 +173,10 @@ test = list[::3]
 # Plot Problem 5
 
 # fig, ax = plt.subplots()
-# ax.plot(list, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
-# ax.plot(list, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
-# ax.plot(list, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
-# ax.plot(list, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
+# ax.plot(list_, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
+# ax.plot(list_, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
+# ax.plot(list_, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
+# ax.plot(list_, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
 # ax.set_xticks(test)
 # ax.set_xticklabels(test)
 # ax.legend(loc='best')
@@ -185,10 +186,10 @@ test = list[::3]
 # # fig.savefig("epsilon_problem5.pdf")
 
 fig, ax = plt.subplots()
-ax.plot(list, m1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
-ax.plot(list, m1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
-ax.plot(list, m2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
-ax.plot(list, m2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
+ax.plot(list_, m1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
+ax.plot(list_, m1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
+ax.plot(list_, m2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
+ax.plot(list_, m2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
 ax.set_xticks(test)
 ax.set_xticklabels(test)
 ax.legend(loc='best')
