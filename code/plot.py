@@ -80,35 +80,35 @@ beta = 1
 
 
 
-os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code/data_8")
+os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code/data")
 
-# Create the arrays for problem 4
+# # Create the arrays for problem 4
 # epsilon = np.zeros(20)
 # m = np.zeros(20)
-# cv = np.zeros(20)
+# cv = np.zeros(20) 
 # Chi = np.zeros(20)
 
-# # Create the arrays for problem 5
-# epsilon1_ord = np.zeros(20)
-# m1_ord = np.zeros(20)
+# Create the arrays for problem 5
+epsilon1_ord = np.zeros(20)
+m1_ord = np.zeros(20)
 
-# epsilon1_rdm = np.zeros(20)
-# m1_rdm = np.zeros(20)
+epsilon1_rdm = np.zeros(20)
+m1_rdm = np.zeros(20)
 
-# epsilon2_ord = np.zeros(20)
-# m2_ord = np.zeros(20)
+epsilon2_ord = np.zeros(20)
+m2_ord = np.zeros(20)
 
-# epsilon2_rdm = np.zeros(20)
-# m2_rdm = np.zeros(20)
+epsilon2_rdm = np.zeros(20)
+m2_rdm = np.zeros(20)
 
-# # list for every number of cycle computed
-# list = ["500", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000"
-# , "10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000", "100000"]
+# list for every number of cycle computed
+list = ["500", "1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000", "9000"
+, "10000", "20000", "30000", "40000", "50000", "60000", "70000", "80000", "90000", "100000"]
 
 # # to access the correct location in the array
-# index = 0
+index = 0
 
-# for i in list:
+for i in list:
 #     # Problem 4
 #     data = pa.mat()    
 #     data.load(f"L2_T1_{i}_cycles.bin")
@@ -119,36 +119,36 @@ os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code/data_8")
 #     Chi[index] = compute_susceptibility(data[1,:], 1., 2)
 
 #     # Problem 5
-#     data1_ord = pa.mat()
-#     data1_rdm = pa.mat()
-#     data2_rdm = pa.mat()
-#     data2_ord = pa.mat()
+    data1_ord = pa.mat()
+    data1_rdm = pa.mat()
+    data2_rdm = pa.mat()
+    data2_ord = pa.mat()
 
-#     data1_ord.load(f"L20_ord_T1_{i}_cycles.bin")
-#     data1_rdm.load(f"L20_random_T1_{i}_cycles.bin")
-#     data2_ord.load(f"L20_ord_T24_{i}_cycles.bin")
-#     data2_rdm.load(f"L20_random_T24_{i}_cycles.bin")
+    data1_ord.load(f"L20_ord_T1_{i}_cycles.bin")
+    data1_rdm.load(f"L20_random_T1_{i}_cycles.bin")
+    data2_ord.load(f"L20_ord_T24_{i}_cycles.bin")
+    data2_rdm.load(f"L20_random_T24_{i}_cycles.bin")
 
-#     epsilon1_ord[index] = compute_epsilon(data1_ord[0,:], 20)
-#     epsilon1_rdm[index] = compute_epsilon(data1_rdm[0,:], 20)
-#     epsilon2_ord[index] = compute_epsilon(data2_ord[0,:], 20)
-#     epsilon2_rdm[index] = compute_epsilon(data2_rdm[0,:], 20)
+    epsilon1_ord[index] = compute_epsilon(data1_ord[0,:], 20)
+    epsilon1_rdm[index] = compute_epsilon(data1_rdm[0,:], 20)
+    epsilon2_ord[index] = compute_epsilon(data2_ord[0,:], 20)
+    epsilon2_rdm[index] = compute_epsilon(data2_rdm[0,:], 20)
 
-#     m1_ord[index] = compute_m_abs(data1_ord[1,:], 20)
-#     m1_rdm[index] = compute_m_abs(data1_rdm[1,:], 20)
-#     m2_ord[index] = compute_m_abs(data2_ord[1,:], 20)
-#     m2_rdm[index] = compute_m_abs(data2_rdm[1,:], 20)
+    m1_ord[index] = compute_m_abs(data1_ord[1,:], 20)
+    m1_rdm[index] = compute_m_abs(data1_rdm[1,:], 20)
+    m2_ord[index] = compute_m_abs(data2_ord[1,:], 20)
+    m2_rdm[index] = compute_m_abs(data2_rdm[1,:], 20)
     
 
-#     index += 1
+    index += 1
 
 
 # # Plot Problem 4
-# test = list[::3]
+test = list[::3]
 
 # fig, ax = plt.subplots()
-# ax.plot(list, Chi, 'ro-', label='cv')
-# ax.hlines(chi(1)/4, list[0], list[-1], 'k', linestyles='dashed', label='cv exact')
+# ax.plot(list, Chi, 'ro-', label='$\chi$')
+# ax.hlines(chi(1)/4, list[0], list[-1], 'k', linestyles='dashed', label=r'$\chi$ exact')
 # ax.set_xticks(test)
 # ax.set_xticklabels(test)
 # ax.legend(loc='best')
@@ -184,17 +184,17 @@ os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code/data_8")
 # ax.set_title(r'$<\epsilon> \mathrm{\ vs\ number\ of\ cycles}$')
 # # fig.savefig("epsilon_problem5.pdf")
 
-# fig, ax = plt.subplots()
-# ax.plot(list, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
-# ax.plot(list, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
-# ax.plot(list, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
-# ax.plot(list, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
-# ax.set_xticks(test)
-# ax.set_xticklabels(test)
-# ax.legend(loc='best')
-# ax.set_xlabel(r'$<|m|>\mathrm{Number\ of\ cycles}$')
-# ax.set_ylabel(r'$<|m|>$')
-# ax.set_title(r'$<|m|> \mathrm{\ vs\ number\ of\ cycles}$')
+fig, ax = plt.subplots()
+ax.plot(list, m1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
+ax.plot(list, m1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
+ax.plot(list, m2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
+ax.plot(list, m2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
+ax.set_xticks(test)
+ax.set_xticklabels(test)
+ax.legend(loc='best')
+ax.set_xlabel(r'$<|m|>\mathrm{Number\ of\ cycles}$')
+ax.set_ylabel(r'$<|m|>$')
+ax.set_title(r'$<|m|> \mathrm{\ vs\ number\ of\ cycles}$')
 # # fig.savefig("m_problem5.pdf")
 
 
@@ -225,138 +225,138 @@ os.chdir(r"/home/rhuvy/Documents/FYS4150/Projects/FYS4150_pro4/code/data_8")
 # # plt.savefig("Histo_T2.pdf")
 
 
-# Problem 8 and 9 
-temperature = pa.mat()
-temperature.load("temp_prob8.bin")
+# # Problem 8 and 9 
+# temperature = pa.mat()
+# temperature.load("temp_prob8.bin")
 
 
-taille = 50
+# taille = 10
 
-temperature = np.array(temperature).reshape(taille)
+# temperature = np.array(temperature).reshape(taille)
 
-eps40 = np.zeros(taille)
-m40 = np.zeros(taille)
-cv40 = np.zeros(taille)
-chi40 = np.zeros(taille)
+# eps40 = np.zeros(taille)
+# m40 = np.zeros(taille)
+# cv40 = np.zeros(taille)
+# chi40 = np.zeros(taille)
 
-eps60 = np.zeros(taille)
-m60 = np.zeros(taille)
-cv60 = np.zeros(taille)
-chi60 = np.zeros(taille)
+# eps60 = np.zeros(taille)
+# m60 = np.zeros(taille)
+# cv60 = np.zeros(taille)
+# chi60 = np.zeros(taille)
 
-eps80 = np.zeros(taille)
-m80 = np.zeros(taille)
-cv80 = np.zeros(taille)
-chi80 = np.zeros(taille)
+# eps80 = np.zeros(taille)
+# m80 = np.zeros(taille)
+# cv80 = np.zeros(taille)
+# chi80 = np.zeros(taille)
 
-eps100 = np.zeros(taille)
-m100 = np.zeros(taille)
-cv100 = np.zeros(taille)
-chi100 = np.zeros(taille)
+# eps100 = np.zeros(taille)
+# m100 = np.zeros(taille)
+# cv100 = np.zeros(taille)
+# chi100 = np.zeros(taille)
 
-for k in range(len(temperature)):
-    T = temperature[k]
-    # Load the data for one temperature
-    data8_40 = pa.mat()
-    data8_40.load(f"L40_prob8_{k}.bin")
-    data8_40 = np.array(data8_40)
+# for k in range(len(temperature)):
+#     T = temperature[k]
+#     # Load the data for one temperature
+#     data8_40 = pa.mat()
+#     data8_40.load(f"L2_prob8_{k}.bin")
+#     data8_40 = np.array(data8_40)
 
-    data8_60 = pa.mat()
-    data8_60.load(f"L60_prob8_{k}.bin")
-    data8_60 = np.array(data8_60)
+#     # data8_60 = pa.mat()
+#     # data8_60.load(f"L60_prob8_{k}.bin")
+#     # data8_60 = np.array(data8_60)
 
-    data8_80 = pa.mat()
-    data8_80.load(f"L80_prob8_{k}.bin")
-    data8_80 = np.array(data8_80)
+#     # data8_80 = pa.mat()
+#     # data8_80.load(f"L80_prob8_{k}.bin")
+#     # data8_80 = np.array(data8_80)
     
-    data8_100 = pa.mat()
-    data8_100.load(f"L100_prob8_{k}.bin")
-    data8_100 = np.array(data8_100)
+#     # data8_100 = pa.mat()
+#     # data8_100.load(f"L100_prob8_{k}.bin")
+#     # data8_100 = np.array(data8_100)
 
-    # Calculate the four quantities
-    eps40[k] = compute_epsilon(data8_40[0,:], 40.)
-    m40[k] = compute_m_abs(data8_40[1,:], 40.)
-    cv40[k] = compute_heat_capacity(data8_40[0,:],  T, 40.)
-    chi40[k] = compute_susceptibility(data8_40[1,:],  T, 40.)
+#     # Calculate the four quantities
+#     eps40[k] = compute_epsilon(data8_40[0,:], 2.)
+#     # m40[k] = compute_m_abs(data8_40[1,:], 40.)
+#     # cv40[k] = compute_heat_capacity(data8_40[0,:],  T, 40.)
+#     # chi40[k] = compute_susceptibility(data8_40[1,:],  T, 40.)
 
-    eps60[k] = compute_epsilon(data8_60[0,:], 60.)
-    m60[k] = compute_m_abs(data8_60[1,:], 60.)
-    cv60[k] = compute_heat_capacity(data8_60[0,:],  T, 60.)
-    chi60[k] = compute_susceptibility(data8_60[1,:],  T, 60.)
+#     # eps60[k] = compute_epsilon(data8_60[0,:], 60.)
+#     # m60[k] = compute_m_abs(data8_60[1,:], 60.)
+#     # cv60[k] = compute_heat_capacity(data8_60[0,:],  T, 60.)
+#     # chi60[k] = compute_susceptibility(data8_60[1,:],  T, 60.)
 
-    eps80[k] = compute_epsilon(data8_80[0,:], 80.)
-    m80[k] = compute_m_abs(data8_80[1,:], 80.)
-    cv80[k] = compute_heat_capacity(data8_80[0,:],  T, 80.)
-    chi80[k] = compute_susceptibility(data8_80[1,:],  T, 80.)
+#     # eps80[k] = compute_epsilon(data8_80[0,:], 80.)
+#     # m80[k] = compute_m_abs(data8_80[1,:], 80.)
+#     # cv80[k] = compute_heat_capacity(data8_80[0,:],  T, 80.)
+#     # chi80[k] = compute_susceptibility(data8_80[1,:],  T, 80.)
 
-    eps100[k] = compute_epsilon(data8_100[0,:], 100.)
-    m100[k] = compute_m_abs(data8_100[1,:], 100.)
-    cv100[k] = compute_heat_capacity(data8_100[0,:],  T, 100.)
-    chi100[k] = compute_susceptibility(data8_100[1,:],  T, 100.)
+#     # eps100[k] = compute_epsilon(data8_100[0,:], 100.)
+#     # m100[k] = compute_m_abs(data8_100[1,:], 100.)
+#     # cv100[k] = compute_heat_capacity(data8_100[0,:],  T, 100.)
+#     # chi100[k] = compute_susceptibility(data8_100[1,:],  T, 100.)
 
-# import sys
-# np.set_printoptions(threshold=sys.maxsize)
+# # import sys
+# # np.set_printoptions(threshold=sys.maxsize)
 
-# print(data8_40[0,:])
-plt.figure()
-plt.plot(temperature, cv100, 'k', label="100")
-plt.plot(temperature, cv80, 'o', label="80")
-plt.plot(temperature, cv60, 'b', label="60")
-plt.plot(temperature, cv40, 'g', label="40")
-plt.legend(loc='best')
-plt.xlabel("Temperature [J/k]")
-plt.ylabel(r"$C_v$")
+# # print(data8_40[0,:])
+# # plt.figure()
+# # plt.plot(temperature, cv100, 'k', label="100")
+# # plt.plot(temperature, cv80, 'o', label="80")
+# # plt.plot(temperature, cv60, 'b', label="60")
+# # plt.plot(temperature, cv40, 'g', label="40")
+# # plt.legend(loc='best')
+# # plt.xlabel("Temperature [J/k]")
+# # plt.ylabel(r"$C_v$")
 
-plt.figure()
-plt.plot(temperature, chi100, 'k', label="100")
-plt.plot(temperature, chi80, 'o', label="80")
-plt.plot(temperature, chi60, 'b', label="60")
-plt.plot(temperature, chi40, 'g', label="40")
-plt.legend(loc='best')
-plt.xlabel("Temperature [J/k]")
-plt.ylabel(r"$\chi$")
+# # plt.figure()
+# # plt.plot(temperature, chi100, 'k', label="100")
+# # plt.plot(temperature, chi80, 'o', label="80")
+# # plt.plot(temperature, chi60, 'b', label="60")
+# # plt.plot(temperature, chi40, 'g', label="40")
+# # plt.legend(loc='best')
+# # plt.xlabel("Temperature [J/k]")
+# # plt.ylabel(r"$\chi$")
 
-plt.figure()
-plt.plot(temperature, m100, 'k', label="100")
-plt.plot(temperature, m80, 'o', label="80")
-plt.plot(temperature, m60, 'b', label="60")
-plt.plot(temperature, m40, 'g', label="40")
-plt.legend(loc='best')
-plt.xlabel("Temperature [J/k]")
-plt.ylabel(r"$|m|$")
+# plt.figure()
+# # plt.plot(temperature, m100, 'k', label="100")
+# # plt.plot(temperature, m80, 'o', label="80")
+# # plt.plot(temperature, m60, 'b', label="60")
+# plt.plot(temperature, m40, 'g', label="40")
+# plt.legend(loc='best')
+# plt.xlabel("Temperature [J/k]")
+# plt.ylabel(r"$|m|$")
 
-plt.figure()
-plt.plot(temperature, eps100, 'k', label="100")
-plt.plot(temperature, eps80, 'o', label="80")
-plt.plot(temperature, eps60, 'b', label="60")
-plt.plot(temperature, eps40, 'g', label="40")
-plt.legend(loc='best')
-plt.xlabel("Temperature [J/k]")
-plt.ylabel(r"$\epsilon$")
+# # plt.figure()
+# # plt.plot(temperature, eps100, 'k', label="100")
+# # plt.plot(temperature, eps80, 'o', label="80")
+# # plt.plot(temperature, eps60, 'b', label="60")
+# # plt.plot(temperature, eps40, 'g', label="40")
+# # plt.legend(loc='best')
+# # plt.xlabel("Temperature [J/k]")
+# # plt.ylabel(r"$\epsilon$")
 
-# print(temperature)
+# # print(temperature)
 
-# Problem 9 
+# # Problem 9 
 
-ind_40 = np.argmax(cv40)
-ind_60 = np.argmax(cv60)
-ind_80 = np.argmax(cv80)
-ind_100 = np.argmax(cv100)
+# ind_40 = np.argmax(cv40)
+# ind_60 = np.argmax(cv60)
+# ind_80 = np.argmax(cv80)
+# ind_100 = np.argmax(cv100)
 
-tc_40 = temperature[ind_40]
-tc_60 = temperature[ind_60]
-tc_80 = temperature[ind_80]
-tc_100 = temperature[ind_100]
+# tc_40 = temperature[ind_40]
+# tc_60 = temperature[ind_60]
+# tc_80 = temperature[ind_80]
+# tc_100 = temperature[ind_100]
 
-tc_arr = np.array([tc_40, tc_60, tc_80, tc_100])
-L_arr = np.array([40, 60, 80, 100])
+# tc_arr = np.array([tc_40, tc_60, tc_80, tc_100])
+# L_arr = np.array([1/40, 1/60, 1/80, 1/100])
 
-res = linregress(L_arr, tc_arr)
-print(res.intercept, res.slope)
-print(res.intercept_stderr)
-plt.figure()
-plt.plot(L_arr, tc_arr, 'ko')
-plt.plot(L_arr, res.intercept + res.slope*L_arr, 'r', label='fitted line')
+# res = linregress(L_arr, tc_arr)
+# print(res.intercept, res.slope)
+# print(res.intercept_stderr)
+# plt.figure()
+# plt.plot(L_arr, tc_arr, 'ko')
+# plt.plot(L_arr, res.intercept + res.slope*L_arr, 'r', label='fitted line')
 
 
 plt.show()
