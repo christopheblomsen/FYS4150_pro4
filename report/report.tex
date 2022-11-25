@@ -268,12 +268,84 @@
 	
 	\section{Methods}\label{sec:methods}
 	%
-	We will use
+	\subsection{MCMC and Metropolis algorithm} \label{subsec:mcmc}
+	To compute our model we will use the Monte Carlo Markov Chain (MCMC). This method use 
+	statistic to study deterministic problem like the Ising model. We define a probability 
+	distribution function and sample states from it. After some iteration or cycle we obtain
+	ensemble of average which allows us to get an understanding of a system when analytical 
+	solution does not exist. \\
+	
+	A Markov Chain is a stochastic process where each step possess a probability
+	independent of the history. Meaning that the only relevant information needed is the 
+	latest step to calculate the probability from transitioning but all previous states are
+	not necessary. This takes away a lot of constraint where keeping track of history would
+	rise big memory issue. Fortunately this is not the case here. \\
+	
+	For the Ising model we have define the distribution probability
+	
+	\begin{equation}
+		p_{\rm \textbf{s}} = \frac{e^{-\beta E(\textbf{s})}}{Z} \label{eq:prob distribution}
+	\end{equation}	 
+	
+	
+	Now we will need two assumption. The first one is ergodicity. This means that every state
+	can be reach within a finite amount of time. This allows us to consider every states possibles
+	as we assume that no state can possibly prevent us from reaching equilibrium (the states 
+	with the biggest probability). We also use detailed balance. This means that if we have
+	two states $P_1$ and $P_2$ we have as much of transition from state 1 to 2 then 2 to 1. Here
+	this means that:
+	
+	\begin{align}
+		P_1 T(1:2) &= P_2T(2:1) \\
+		\frac{T(1:2)}{T(2:1)} &= \frac{P_2}{P_1} \\ 
+		&= e^{-\beta \Delta E} \label{eq:deltaE}
+	\end{align}
 
+	where $T(i:j)$ denotes the transition probability of going to state i to j. The last line 
+	is obtained when we replace the $P_i$ with eq \ref{eq:prob distribution}. \\
+	
+	However we do not know what the actual transition probability is but we do not need to know
+	it with the Metropolis algorithm. This algorithm creates an acceptance function that respect
+	the constraint of our system and is use to represent our transition probability. We assume 
+	that our transition probability should be depend of \ref{eq:deltaE}. This gives us
+	
+	\begin{equation}
+		T(1:2) = \text{min}(1, e^{-\beta \Delta E\\}) \label{eq:metropolis}
+	\end{equation}
+	
+	
+	This equation satisfies all of our constraints. We can see that the transition can only
+	take values between 0 and 1. 
 	
 	% ===========================================
-	\subsection*{The algorithm}\label{sec:algorithm}
+	\subsection*{The algorithm}\label{subsec:you suck eloi}
 	%
+	
+	We create a lattice of size $L \times L $ full of spin of values \{-1, 1\}. Since we 
+	consider boundary conditions we use the modulo operator to access the spin at the beginning
+	or end of our lattice once we reach the opposite side while calculating the Hamiltonian. We
+	initialize our lattice either randomly or ordered with all spin in the up position (value
+	of 1). \\
+	
+	Once that we have initialize our system with the correct temperature and a random initial
+	state. We start the our Monte Carlo algorithm. One cycle correspond of N spin flip attempt. 
+	N being the total number of spin. We take one random spin, we flip it, calculate the 
+	energy difference and we have three options. If $\Delta E \le 0 $ we accept the state, 
+	change our lattice and compute the magnetization and the energy. If $\Delta E > 0$, we have
+	two possibility. We will draw a random number u between 0 and 1 from a uniform distribution
+	and if $u < \Delta E$ we accept the new state. If that is not the case we refuse the state
+	keep our current state and add their energy and magnetization to our data once more. \\
+	
+	We will compute $K$ number of cycle but we will keep only $K - N_{\rm burn}$ values 
+	because in statistical mechanics we need to reach equilibrium to match the experimental. 
+	This methods is called the burn-in method and consist in assuming that $N_{\rm burn}$ cycle
+	is enough to reach equilibrium in our system. The determination of this value will be 
+	discussed in more detail in Section \ref{subsec: burn in estimation}. \\
+	
+	Finally, to accelerate our computational time we will use parallelization with OpenMP. We 
+	will use it when we will run simulation for a lot of temperature while studying the 
+	phase transition. This will allow us to parallelize the temperature loop as each iteration
+	are independent from each other. This operation reduced our computing time up to $50\%$. 
 
 	% ===========================================
 	\section{Results}\label{sec:results}
