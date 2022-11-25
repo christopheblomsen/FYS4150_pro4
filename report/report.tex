@@ -71,6 +71,7 @@
 
 % ===========================================
 
+%\addbibresource{refs.bib} % Entries are in the "refs.bib" file
 
 \begin{document}
 	
@@ -81,119 +82,133 @@
 	
 	%This is how we create an abstract section.
 	\begin{abstract}
-	We study the 2D ferromagnetic Ising Model with Monte Carlo Markov chain. We use the Metropolis algorithm to sample the probability distribution of the Ising model.
-	As proven in 1944 by Lars Onsager$\colorbox{red}{Citation of his paper?}$, we have a phase transition at the critical temperature $T_c(L=\infty)=2.269 \mathrm{J / k}$. We find a matching numerical 
-	critical temperature $T_c(L=\infty) = 2.29 \pm 0.04 \mathrm{J / k}$. To verify that the Metropolis algorithm is working correctly, we used the analytical solution in the case 
-	of 2x2 lattice. Additionnaly we look at the distribution of our energy normalized by spin $\epsilon$ for a 20x20 lattice with different temperatures. We find that
-	we temperature plays an important role in the shape of our distribution. Since we can only compute theoretical values when we reach equilibrium we used the "Burn-in" 
-	method to determine the number of cycle needed to reach equilibrium. For a 20x20 lattice, we determine that around 10000 cycles is enough to reach equilibrium.
-	  
-	\end{abstract}
+We study the 2D ferromagnetic Ising Model with the Monte Carlo Markov chain. We
+use the Metropolis algorithm to sample the probability distribution of the Ising
+model.
+	As proven in 1944 by Lars Onsager\cite{PhysRev.65.117}, we have a phase
+transition at the critical temperature $T_c(L=\infty)=2.269 \mathrm{J / k}$. We
+find a matching numerical critical temperature
+$T_c(L=\infty) = 2.29 \pm 0.04 \mathrm{J / k}$. To verify that the Metropolis
+algorithm is working correctly, we used the analytical solution in the case  of
+2x2 lattice. Additionally, we look at the distribution of our energy normalized
+by spin $\epsilon$ for a 20x20 lattice with different temperatures. Temperature plays an important role in the shape of our distribution. Since
+we can only compute theoretical values when we reach equilibrium, we used the
+"Burn-in"  method to determine the number of cycles needed to reach equilibrium.
+For a 20x20 lattice, we determine that around 10000 cycles are enough to reach
+equilibrium.
+\end{abstract}
 	\maketitle	
 	
 	
 	% ===========================================
 	\section{Introduction} \label{sec:introduction}
 	%
-	The Ising model is a statistical mechanics model that describes the ferromagnetism by a system of spins on a lattice. 
-	Ferromagnetism is a property of certain materials allowing it to form a permanent magnet for example. One important concept in the Ising model for dimension 
-	higher than 1 is phase transition. A phase transition is an extreme change in the physical properties. In our case, the model will go high magnetization to close to 
+	The Ising model is a statistical mechanics model that describes ferromagnetism by a system of spins on a lattice.
+	Ferromagnetism is a property of certain materials, allowing them to form a permanent magnet. A phase transition is one important concept in the Ising model for dimensions
+	higher than 1. A phase transition is an extreme change in the physical properties. In our case, the model will go high magnetization to close to
 	0 with increasing temperature. $\colorbox{red}{More detail about Ising model? Other use in science perhaps}$\\
-	
-	There is no analytical solution for the Ising model in dimensions $>$ 2. However, we can use the Monte Carlo Markov Chain (MCMC) algorithm to simulate our model. 
-	MCMC was developed in the 40s by Stanislaw Ulam and Jon Von Neumann $\colorbox{red}{Citation of his paper?}$. The basic idea is to use randomness to solve deterministic problem and as shown great 
-	results in many situations $\colorbox{red}{some example?}$ in computational physics. In this
-	paper we will apply the Monte Carlo methods to solve the 2D Ising Model and we will use the 
-	Metropolis algorithm to sample the distribution. As explained in more details in section
-	\ref{sec:theory} we will use the relation between finite lattice and infinite lattice to 
-	estimate the critical temperature, $T_c(L=\infty)$ solved analytically by Lars Onsager in 1944. \\
-	
-	In section \ref{sec:theory}, we will introduce a formal explanation of the Ising Model 
-	with the analytical solution for the 2x2 case used as a benchmark for our algorithm. In the
-	next section \ref{sec:methods} we will discuss the numerical methods and the algorithms 
-	used. Section \ref{sec:results} and section \ref{sec:discussion} respectively presents our
-	results from our simulation and an analysis of them. Finally section \ref{sec:conclusion} summarize the main points of this paper.   
 
+	There is no analytical solution for the Ising model in dimensions $>$ 2.
+However, we can use the Monte Carlo Markov Chain (MCMC) algorithm to simulate
+our model.
+	MCMC was developed in the 40s by Stanislaw Ulam and John Von Neumann in Los
+Alamos. So the original paper could not be found, but the history is well
+documented in e.g.\cite{Robert_2011}. The basic idea is to use randomness to
+solve a deterministic problem and has shown remarkable
+	results in many situations $\colorbox{red}{some example?}$ in computational
+physics. In this
+	paper, we will apply the Monte Carlo methods to solve the 2D Ising Model, and
+we will use the
+	Metropolis algorithm to sample the distribution. As explained in more
+details in section
+	\ref{sec:theory}, we will use the relation between finite lattice and
+infinite lattice to
+	estimate the critical temperature, $T_c(L=\infty)$ solved analytically by
+Lars Onsager in 1944. \\
+
+	In section \ref{sec:theory}, we will formally explain the Ising Model
+	with the analytical solution for the 2x2 case used as a benchmark for our algorithm. In the
+	next section \ref{sec:methods} we will discuss the numerical methods and the algorithms
+	used. Section \ref{sec:results} and section \ref{sec:discussion} respectively presents our
+	results from our simulation and an analysis of them. Finally, section \ref{sec:conclusion} summarises this paper's main points.
 	\section{Theory}\label{sec:theory}
-	\subsection{2D Ising Model} \label{subsec:Ising}
-	The 2D Ising model is a 2 dimensional lattice of equal length and row (L) compose of spins
-	$s_i$. So an lattice of size L will wield $\rm LxL=N$ spins. Each spin can take one of the
-	following values $\{-1,	1\}$ representing their magnetic dipole. Every spin can interact 
-	with their next neighbor meaning that every spin can have up to four interactions. One 
-	important detail in physics is what to do with the boundaries. In our case we will consider 
+\subsection{2D Ising Model} \label{subsec:Ising}
+	The 2D Ising model is a 2-dimensional lattice of equal length and row (L) composed of spins
+	$s_i$. So a lattice of size L will wield $\rm LxL=N$ spins. Each spin can take one of the
+	following values $\{-1,	1\}$ representing their magnetic dipole. Every spin can interact
+	with its next neighbour, meaning that every spin can have up to four interactions. One
+	important detail in physics is what to do with the boundaries. In our case, we will consider
 	a periodic boundary condition. This means that we will always consider four interactions
-	for each spin. This is the geometrical equivalent of having a lattice in the shape of a 
-	torus. We will denote the spin configuration by $\textbf{s}=\{s_1, s_2, ..., s_N\}$. This allows us 
-	to write the Hamiltonian 
-	
+	for each spin. This is the geometrical equivalent of having a lattice in the shape of a
+	torus. We will denote the spin configuration by $\textbf{s}=\{s_1, s_2, ..., s_N\}$. Which allows us
+	to write the Hamiltonian
+
 	\begin{equation}
-		H(\textbf{s}) = -J \sum_{<kl>} s_ks_l + h \sum_{i=1}^{N} s_i \label{eq:hamilton}
+		H(\textbf{s}) = -J \sum_{\langle kl \rangle} s_ks_l + h \sum_{i=1}^{N} s_i \label{eq:hamilton}
 	\end{equation}
-	
-	Eq. \ref{eq:hamilton} is composed of two terms. The first one is the contribution of every 
-	neighbors. $<kl>$ represents the neighboring pairs of k and l. $J$ is the coupling constant 
-	and represent the strength of spin interaction. In this paper every results have been 
-	produce with $J=1$. The second term is here to account for a potential external magnetic 
-	field with $h$ acting as the strength of this magnetic field. We will not consider an 
-	external magnetic field in this paper so $h=0$ and eq. \ref{eq:hamilton} becomes
-	
+
+	Eq. \ref{eq:hamilton} is composed of two terms. The first one is the contribution of every
+	neighbour. $\langle kl \rangle$ represents the neighbouring pairs of k and l. $J$ is the coupling constant
+	and represents the strength of spin interaction. We produced all the results in this paper with $J=1$. The second term is here to account for a potential external magnetic
+	field with $h$ acting as the strength of this magnetic field. This paper will not consider an
+	external magnetic field, so $h=0$ and eq. \ref{eq:hamilton} becomes
+
 	\begin{equation}
-		H(\textbf{s}) = -J \sum_{<kl>} s_ks_l \label{eq:Hamiltonian}
+		H(\textbf{s}) = -J \sum_{\langle kl \rangle} s_ks_l \label{eq:Hamiltonian}
 	\end{equation}
-	
-	In statistical mechanics we use probability and observables. In our problem we have two 
-	observables the magnetization and the energy respectively 
-	
+
+	In statistical mechanics, we use probability and observables. In our problem, we have two
+	observables the magnetisation and the energy, respectively
+
 	\begin{align}
 		M(\textbf{s}) &= \sum_{i=1} s_i \label{eq:M}\\
-		E(\textbf{s}) &= H(\textbf{s}) = -J \sum_{<kl>} s_ks_l \label{eq:E}
+		E(\textbf{s}) &= H(\textbf{s}) = -J \sum_{\langle kl \rangle} s_ks_l \label{eq:E}
 	\end{align}
 
-	$M$ is the magnetization summing all spins in the lattice. Since we will study these 
-	observable for different lattice size we introduce the normalized by spin magnetization and
-	energy 
-	
+	$M$ is the magnetisation summing all spins in the lattice. Since we will study these
+	observable for different lattice sizes, we introduce the normalised by spin magnetisation and
+	energy
+
 	\begin{align}
-		m(\textbf{s}) &= \frac{M(\textbf{s})}{N} \label{eq:m} \\   
+		m(\textbf{s}) &= \frac{M(\textbf{s})}{N} \label{eq:m} \\
 		\epsilon(\textbf{s}) &= \frac{E(\textbf{s})}{N}  \label{eq:epsilon}
 	\end{align}
->>>>>>> refs/remotes/origin/main
 
-	
+
 	Given a temperature $T$ to determine the probability of being in the configuration
 	$\textbf{s}$ we will use the Boltzmann distribution with the partition function $Z$
-	
+
 	\begin{align}
 		p(\textbf{s},T) &= \frac{1}{Z} e^{-\beta E(\textbf{s})} \label{eq:B_probability} \\
 		Z &= \sum_{\text{\textbf{s}}} e^{-\beta E(\textbf{s})} \label{eq:partition_fun}
 	\end{align}
 
 	where $\beta = \frac{1}{kT}$, $k$ the Boltzmann constant. the summation for the partition
-	function means that we iterate over every possible s\textbf{s}. This numbers scale as $2^N$
-	showing with analytical calculation of the partition for big lattice becomes quickly 
+	function means that we iterate over every possible s\textbf{s}. These numbers scale as $2^N$
+	showing with the analytical calculation of the partition for a big lattice becomes quickly
 	impossible. \\
-	
-	In statistical mechanics we can only experimentally calculate the averaged values of our 
-	observable. Meaning that for a discrete observable $A(X)$ with probability $p(X)$ we have 
+
+	In statistical mechanics, we can only experimentally calculate the averaged values of our
+	observable. Meaning that for a discrete observable $A(X)$ with probability $p(X)$ we have
 	\begin{equation}
-		<A> = \sum_{X}A(X)p(X) \label{eq:expectation value}
-	\end{equation} 
-	
-	We can then apply eq. \ref{eq:expectation value} to our observables and we can define two 
-	values of interest, $C_v$ and $\chi$. The first one is he heat capacity and $\chi$ is the
-	magnetic susceptibility 
-	
+		\langle A \rangle = \sum_{X}A(X)p(X) \label{eq:expectation value}
+	\end{equation}
+
+	We can then apply eq. \ref{eq:expectation value} to our observables, and we can define two
+	values of interest, $C_v$ and $\chi$. The first is the heat capacity, and $\chi$ is the
+	magnetic susceptibility.
+
 	\begin{align}
-		C_v &= \frac{<E^2> - <E>^2}{NkT^2} \label{eq:heat_capacity} \\
-		\chi &= \frac{<M^2> - <|M|>^2}{NKT} \label{eq:susceptibility}
+		C_v &= \frac{\langle E^2 \rangle - \langle E \rangle^2}{NkT^2} \label{eq:heat_capacity} \\
+		\chi &= \frac{\langle M^2 \rangle - \langle |M| \rangle^2}{NKT} \label{eq:susceptibility}
 	\end{align}
- 	
+
 	\subsection{2x2 analytical solution}\label{subsec:analytical solution}
-	
-	Since it gets quickly impossible to calculate the probability distribution due to the 
+
+	Since it gets quickly impossible to calculate the probability distribution due to the
 	partition function. We will first solve the 2x2 case where we only have $2^4=16$ possible
-	$\textbf{s}$. 
-	
+	$\textbf{s}$.
+
 	\begin{table}[h!]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
@@ -202,68 +217,66 @@
 		\hline
 		\hline
 		0 & -4 &  -4 &  1  \\
-		1 & 0&   -2&   4  \\ 
+		1 & 0&   -2&   4  \\
 		2 & 0 & 0&  4  \\
 		2 & 4 & 0 &  2 \\
 		3 & 0  & 2 & 4 \\
 		4 & -4 & 4 & 1 \\
 		\hline
 	\end{tabular}
-	\caption{ Summary of all possible energy E, magnetization M and the degeneracy is the 
-	number of spin configuration with the same characteristic} \label{tab:summary2x2}
-	\end{table} 
-	
-	Table \ref{tab:summary2x2} shows all possibility in the 2x2 case and we see that summing all
-	of the degeneracy gives us 16 assuring us that we covered every single possibility. Now that
-	we have found these values. We can proceed in the calculation of the partition function
-	
-	\begin{equation}
-		Z = 12 + 4\cosh(8\beta) \label{eq:Analytical_partition} 
-	\end{equation}	
+	\caption{ Summary of all possible energy E, magnetisation M and the degeneracy is the
+	number of spin configurations with the same characteristic} \label{tab:summary2x2}
+	\end{table}
 
-	
-	With Table \ref{tab:summary2x2}, eq. \ref{eq:Analytical_partition} and \ref{eq:expectation value} we obtain the following relations 
-	
-	\begin{align*} \label{eq:sol}
-		<E> &= \frac{-32\sinh(8\beta)}{Z}  \\
-		<\epsilon> &= \frac{<E>}{4} = \frac{-8\sinh(8\beta)}{Z} \\
-		<E^2> &= \frac{256 \cosh(8\beta)}{Z} \\
-		<M> &= \frac{32}{Z} (2 + e^{8\beta}) \\
-		<M^2> &= \frac{32}{Z} (1 + e^{8\beta}) \\
-		<C_v> &= \frac{<E^2> - <E>^2}{4} \\
-		<\chi> &=  \frac{<M^2> - <|M|>^2}{4}
-	\end{align*}
-	
-	
-	\subsection{Phase transition}\label{subsec:phase transition}
-	One of the most interesting physical property of the 2D Ising model is the phase transition.
-	It means that for a certain critical temperature $T_c$ our lattice will suddenly magnetizes. For an infinite size model Lars Onsager found in 1944 the theoretical value of 
-	
+	Table \ref{tab:summary2x2} shows all possibilities in the 2x2 case, and we see that summing all
+	of the degeneracy gives us 16, assuring us that we covered every possibility. Now that
+	we have found these values. We can proceed with the calculation of the partition function.
+
 	\begin{equation}
-		T_c(L=\infty)=\frac{2}{log(1 + \sqrt{2})} J/k \approx 2.269 J/k \label{Tc_theo}
+		Z = 12 + 4\cosh(8\beta) \label{eq:Analytical_partition}
 	\end{equation}
-	
-	Another important aspect of phase transition is that different system exhibit similar 
-	behavior around the critical temperature. This is known as the critical exponents. For the 
-	finite size we have \colorbox{red}{Probably quote Morten (found in project description)}. 
-	
+
+
+	With Table \ref{tab:summary2x2}, eq. \ref{eq:Analytical_partition} and \ref{eq:expectation value} we obtain the following relations
+
+	\begin{align*} \label{eq:sol}
+		\langle E \rangle &= \frac{-32\sinh(8\beta)}{Z}  \\
+		\langle \epsilon \rangle &= \frac{\langle E \rangle}{4} = \frac{-8\sinh(8\beta)}{Z} \\
+		\langle E^2 \rangle &= \frac{256 \cosh(8\beta)}{Z} \\
+		\langle M \rangle &= \frac{8}{Z} (2 + e^{8\beta}) \\
+		\langle M^2 \rangle &= \frac{32}{Z} (1 + e^{8\beta}) \\
+		\langle C_v \rangle &= \frac{\langle E^2 \rangle - \langle E \rangle^2}{4} \\
+		\langle \chi \rangle &=  \frac{\langle M^2 \rangle - \langle |M| \rangle^2}{4}
+	\end{align*}
+
+
+	\subsection{Phase transition}\label{subsec:phase transition}
+	One of the most interesting physical properties of the 2D Ising model is the phase transition.
+	It means that our lattice will suddenly magnetise for a specific critical temperature $T_c$. For an infinite-size model, Lars Onsager found in 1944 that the theoretical value of
+
+	\begin{equation}
+		T_c(L=\infty)=\frac{2}{\log(1 + \sqrt{2})} J/k \approx 2.269 J/k \label{Tc_theo}
+	\end{equation}
+
+	Another important aspect of phase transition is that different system exhibit similar
+	behaviour around the critical temperature. This is known as the critical exponents. We have the finite size from chapter 13 in the lecture notes\cite{Morten15}.
+
 	\begin{equation}
 		\xi \propto |T - T_c(L=\infty)|^{-\nu} \label{eq:critical exponent}
 	\end{equation}
-	
-	with critical exponent $\nu=1$, $\xi$ is the correlation length and the largest possible 
+
+	with critical exponent $\nu=1$, $\xi$ is the correlation length and the largest possible
 	value is $\xi=L$, which we associate with the critical temperature of our system. \\
-	
-	With our finite critical temperature $T_c(L)$  we can estimate numerically the infinite
-	critical temperature with the scaling relation 
-	
+
+	With our finite critical temperature $T_c(L)$, we can estimate numerically the infinite
+	critical temperature with the scaling relation
+
 	\begin{equation}
 		T_c(L) = aL^{-1} + T_c(L=\infty) \label{eq:scaling relation}
 	\end{equation}
-	
-	a is a constant. This allows us to perform a linear regression to find approximate value 
+
+	$a$ is a constant. This allows us to perform a linear regression to find an approximate value
 	of the slope (a) and the intersect point, $T_c(L=\infty)$.
-	
 	% ===========================================
 	
 	
@@ -356,7 +369,7 @@
 	7000, 8000, 9000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000\}
 	cycles and $L=2$. We computed the analytical solution described in Section \ref{subsec:analytical solution}. 
 	Figures \ref{fig:chi4} and \ref{fig:cv4} shows the expected value of $\chi$ and $C_v$ for different number of cycle done. The theoretical values is plotted in dashed line. We did
-	not represented $<m>$ or $<E>$ as they are a necessity to compute $\chi$ and $C_v$ so 
+	not represented $\langle m \rangle$ or $\langle E \rangle$ as they are a necessity to compute $\chi$ and $C_v$ so
 	finding good results for the last two shows that we have evaluated correctly the other
 	quantities. 
 	
@@ -440,7 +453,7 @@
 	\subsection{Burn-in}\label{subsec:dis burnin}
 	
 	We know take a look at the equilibration time. There are many ways of calculating the required
-	time for our algorithm to reach equilibrium \colorbox{red}{some citation}. We chose 
+	time for our algorithm to reach equilibrium time as discussed in chapter 13.9 in the lecture notes \cite{Morten15}. We chose
 	to implement the burn-in method. This method consist in letting our code run for a certain number
 	of cycle $N_{\rm burn}$ and once we reach the $N_{\rm burn} + 1$ cycle we consider that we have reached equilibrium and we start saving the data of interest.    
 	
@@ -468,7 +481,8 @@
 	\onecolumngrid
 	
 	%\bibliographystyle{apalike}
-	\bibliography{ref}
+	%\printbibliography[heading=bibintoc, title={Refrences}]
+	\bibliography{refs}
 	
 	
 \end{document}
