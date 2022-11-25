@@ -65,7 +65,7 @@ def avg_E2(beta):
     return 256/Z(beta) * np.cosh(8*beta) 
 
 def avg_M(beta):
-    return 32/Z(beta) * (2 + np.exp(8*beta))
+    return 8/Z(beta) * (2 + np.exp(8*beta))
 
 def avg_M2(beta):
     return 32/Z(beta) * (1 + np.exp(8*beta))
