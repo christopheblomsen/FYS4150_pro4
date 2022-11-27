@@ -14,11 +14,6 @@ Ising::Ising(int length, double temperature, bool order_){
     // when we calculate Cv and Chi 
 }
 
-// No idea,  maybe just recreate a new lattice? 
-void Ising::reset(){
-    std::cout << "No idea" << std::endl;
-}
-
 void Ising::ordered_lattice(int N, int spin, arma::mat &lattice){
     for (int i=0; i < N; i++){
         for (int j=0; j < N; j++){

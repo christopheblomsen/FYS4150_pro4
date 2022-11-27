@@ -11,10 +11,6 @@ struct Ising{
     Ising(int length, double temperature, bool order_=false);
     arma::mat lattice_init(int N);
 
-    // reset for each mcmc
-    // What goes in here?
-    void reset();
-
     // Method for ordered lattice
     void ordered_lattice(int N, int spin, arma::mat &lattice);
 
