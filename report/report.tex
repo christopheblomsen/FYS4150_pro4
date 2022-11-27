@@ -436,45 +436,41 @@ Lars Onsager in 1944. \\
 	% ===========================================
 	\section{Discussion}\label{sec:discussion}
 	%
-	\subsection{Analytical and Numerical for L=2}\label{subsec:dis 2x2}
-	
 	Figures \ref{fig:chi4} and \ref{fig:cv4} shows the expected value of the susceptibility
-	and the heat capacity for different MCMC cycle. We see that we reach quickly the theoretical
-	value in 2000 cycles. Increasing the number of cycle will provide better and better 
-	approximation as expected. However we notice that we never are perfectly constant and adding
-	more cycles does not gives us the assurance that we would reach the theoretical value. This 
-	can be explained due to the randomness of our algorithms. Indeed, if we start in a low probability state we can spend some time equilibrating which would weight heavily on the 
-	expected value. This two figures shows that the burn in method would improve significantly 
+	and the heat capacity for different MCMC cycle. We see that we quickly reach the theoretical
+	value in 2000 cycles. Increasing the number of cycles will provide better and better
+	approximation as expected. However, we notice that we never are perfectly constant and adding
+	more cycles does not assure us that we will reach the theoretical value. This
+	can be explained due to the randomness of our algorithms. Indeed, if we start in a low probability state, we can spend some time equilibrating which would weigh heavily on the
+	expected value. These two figures show that the burn-in method would significantly improve
 	the numerical value.
-	
-	
+
+
 	\subsection{Burn-in}\label{subsec:dis burnin}
-	
-	We know take a look at the equilibration time. There are many ways of calculating the required
-	time for our algorithm to reach equilibrium time as discussed in chapter 13.9 in the lecture notes \cite{Morten15}. We chose
-	to implement the burn-in method. This method consist in letting our code run for a certain number
-	of cycle $N_{\rm burn}$ and once we reach the $N_{\rm burn} + 1$ cycle we consider that we have reached equilibrium and we start saving the data of interest.    
-	
-	
+
+	We now take a look at the equilibration time. There are many ways of calculating the required
+	time for our algorithm to reach equilibrium time, as discussed in chapter 13.9 in the lecture notes \cite{Morten15}. We chose
+	to implement the burn-in method. This method lets our code run for a certain number
+	of cycles $N_{\rm burn}$, and once we reach the $N_{\rm burn} + 1$ cycle, we consider that we have reached equilibrium, and we start saving the data of interest.
+
+
 	\subsection{Distribution of $\epsilon$}\label{subsec:dis epsilon}
-	
+
 	\subsection{Parallelization}\label{subsec: dis parallelization}
-	
+
 	\subsection{Phase transition and critical temperature}\label{subsec: dis phase transition}
 	
 	% ===========================================
 	\section{Conclusion}\label{sec:conclusion}
-	We have studied the 2D Ising model with the Monte Carlo Markov Chain algorithm 
-	using the Metropolis algorithm to sample the spin configuration. We found different 
-	distribution of $\epsilon$ for different temperature and found out that it plays 
-	an important role in the distribution's shape. The main focus on this paper is the 
-	phase transition. For different lattice size we iterated over four different lattice 
-	size $L=$\{40, 60, 80, 100 \}, used the MCMC algorithm to compute the expected values 
-	of $\chi$ and $C_v$. This allowed us to found a critical temperature of $T_c(L=\infty)$
-	to be $ 2.29 \pm 0.04 J/k $ where the error is calculated via the fitting function 
+	We have studied the 2D Ising model with the Monte Carlo Markov Chain algorithm
+	using the Metropolis algorithm to sample the spin configuration. We found different distributions of $\epsilon$ for different temperatures and that it plays
+	an important role in the distribution's shape. The main focus of this paper is the
+	phase transition. For different lattice sizes, we iterated over four different lattice
+	sizes $L=$\{40, 60, 80, 100 \}, and used the MCMC algorithm to compute the expected values
+	of $\chi$ and $C_v$. This allowed us to find a critical temperature of $T_c(L=\infty)$
+	to be $ 2.29 \pm 0.04 J/k $ where the error is calculated via the fitting function
 	\textit{linregress} from the \textbf{scipy} library. The numerical value is in the range
 	of the theoretical value $T_{c}^{\rm th} \approx 2.269 J/k$.
-	
 	
 	\onecolumngrid
 	\section*{Refrences}
