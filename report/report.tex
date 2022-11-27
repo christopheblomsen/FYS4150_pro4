@@ -280,99 +280,99 @@ Lars Onsager in 1944. \\
 	% ===========================================
 	
 	
+
 	\section{Methods}\label{sec:methods}
 	%
 	\subsection{MCMC and Metropolis algorithm} \label{subsec:mcmc}
-	To compute our model we will use the Monte Carlo Markov Chain (MCMC). This method use 
-	statistic to study deterministic problem like the Ising model. We define a probability 
-	distribution function and sample states from it. After some iteration or cycle we obtain
-	ensemble of average which allows us to get an understanding of a system when analytical 
+	We will use the Monte Carlo Markov Chain (MCMC) to compute our model. This method use
+	statistic to study deterministic problem like the Ising model. We define a probability
+	distribution function and sample states from it. After some iteration or cycle, we obtain
+	an ensemble of average, which allows us to understand a system when an analytical
 	solution does not exist. \\
-	
-	A Markov Chain is a stochastic process where each step possess a probability
-	independent of the history. Meaning that the only relevant information needed is the 
-	latest step to calculate the probability from transitioning but all previous states are
-	not necessary. This takes away a lot of constraint where keeping track of history would
-	rise big memory issue. Fortunately this is not the case here. \\
-	
-	For the Ising model we have define the distribution probability
-	
+
+	A Markov Chain is a stochastic process where each step possesses a probability
+	independent of the history. This means that the only relevant information needed is the
+	latest step to calculate the probability of transitioning, but all previous states are
+	unnecessary. This removes many constraints where keeping track of history would
+	raise big memory issues. Fortunately, this is not the case here. \\
+
+	For the Ising model, we have defined the distribution probability.
+
 	\begin{equation}
 		p_{\rm \textbf{s}} = \frac{e^{-\beta E(\textbf{s})}}{Z} \label{eq:prob distribution}
-	\end{equation}	 
-	
-	
-	Now we will need two assumption. The first one is ergodicity. This means that every state
-	can be reach within a finite amount of time. This allows us to consider every states possibles
-	as we assume that no state can possibly prevent us from reaching equilibrium (the states 
-	with the biggest probability). We also use detailed balance. This means that if we have
-	two states $P_1$ and $P_2$ we have as much of transition from state 1 to 2 then 2 to 1. Here
+	\end{equation}
+
+
+	Now we will need two assumptions. The first one is ergodicity. This means that every state
+	can be reached within a finite amount of time. This allows us to consider every state's possibilities
+	as we assume that no state can prevent us from reaching equilibrium (the states
+	with the biggest probability). We also use the detailed balance. This means that if we have
+	two states $P_1$ and $P_2$, we have as much transition from state 1 to 2 then 2 to 1. Here
 	this means that:
-	
+
 	\begin{align}
 		P_1 T(1:2) &= P_2T(2:1) \\
-		\frac{T(1:2)}{T(2:1)} &= \frac{P_2}{P_1} \\ 
+		\frac{T(1:2)}{T(2:1)} &= \frac{P_2}{P_1} \\
 		&= e^{-\beta \Delta E} \label{eq:deltaE}
 	\end{align}
 
-	where $T(i:j)$ denotes the transition probability of going to state i to j. The last line 
+	Where $T(i:j)$ denotes the transition probability of going from state i to j. The last line
 	is obtained when we replace the $P_i$ with eq \ref{eq:prob distribution}. \\
-	
-	However we do not know what the actual transition probability is but we do not need to know
-	it with the Metropolis algorithm. This algorithm creates an acceptance function that respect
-	the constraint of our system and is use to represent our transition probability. We assume 
-	that our transition probability should be depend of \ref{eq:deltaE}. This gives us
-	
+
+	However, we do not know the actual transition probability, but we do not need to know
+	it with the Metropolis algorithm. This algorithm creates an acceptance function that respects
+	our system's constraint and is used to represent our transition probability. We assume
+	that our transition probability should depend on \ref{eq:deltaE}. This gives us
+
 	\begin{equation}
 		T(1:2) = \text{min}(1, e^{-\beta \Delta E\\}) \label{eq:metropolis}
 	\end{equation}
-	
-	
+
+
 	This equation satisfies all of our constraints. We can see that the transition can only
-	take values between 0 and 1. 
-	
+	take values between 0 and 1.
+
 	% ===========================================
 	\subsection*{The algorithm}\label{subsec:you suck eloi}
 	%
-	
-	We create a lattice of size $L \times L $ full of spin of values \{-1, 1\}. Since we 
-	consider boundary conditions we use the modulo operator to access the spin at the beginning
+
+	We create a lattice of size $L \times L $ full of spin of values \{-1, 1\}. Since we
+	consider boundary conditions, we use the modulo operator to access the spin at the beginning
 	or end of our lattice once we reach the opposite side while calculating the Hamiltonian. We
-	initialize our lattice either randomly or ordered with all spin in the up position (value
+	initialise our lattice either randomly or ordered with all spin in the up position (value
 	of 1). \\
-	
-	Once that we have initialize our system with the correct temperature and a random initial
-	state. We start the our Monte Carlo algorithm. One cycle correspond of N spin flip attempt. 
-	N being the total number of spin. We take one random spin, we flip it, calculate the 
-	energy difference and we have three options. If $\Delta E \le 0 $ we accept the state, 
-	change our lattice and compute the magnetization and the energy. If $\Delta E > 0$, we have
-	two possibility. We will draw a random number u between 0 and 1 from a uniform distribution
-	and if $u < \Delta E$ we accept the new state. If that is not the case we refuse the state
-	keep our current state and add their energy and magnetization to our data once more. \\
-	
-	We will compute $K$ number of cycle but we will keep only $K - N_{\rm burn}$ values 
-	because in statistical mechanics we need to reach equilibrium to match the experimental. 
-	This methods is called the burn-in method and consist in assuming that $N_{\rm burn}$ cycle
-	is enough to reach equilibrium in our system. The determination of this value will be 
+
+	Once we have initialised our system with the correct temperature and a random initial
+	state. We start our Monte Carlo algorithm. One cycle corresponds of N spin flip attempt.
+	N being the total number of spins. We take one random spin, flip it, calculate the
+	energy difference, and have three options. If $\Delta E \le 0 $, we accept the state,
+	change our lattice and compute the magnetisation and the energy. If $\Delta E > 0$, we have
+	two possibilities. We will draw a random number u between 0 and 1 from a uniform distribution
+	, and if $u < \Delta E$, we accept the new state. If that is not the case, we refuse the state to keep our current state and add their energy and magnetisation to our data once more. \\
+
+	We will compute $K$ number of cycles, but we will keep only $K - N_{\rm burn}$ values
+	because in statistical mechanics, we need to reach equilibrium to match the experimental.
+	This method is called the burn-in method and assumes that $N_{\rm burn}$ cycle
+	is enough to reach equilibrium in our system. The determination of this value will be
 	discussed in more detail in Section \ref{subsec: burn in estimation}. \\
-	
-	Finally, to accelerate our computational time we will use parallelization with OpenMP. We 
-	will use it when we will run simulation for a lot of temperature while studying the 
-	phase transition. This will allow us to parallelize the temperature loop as each iteration
-	are independent from each other. This operation reduced our computing time up to $50\%$. 
+
+	Finally, we will use parallelisation with OpenMP to accelerate our computational time. We
+	will use it to simulate many temperatures while studying the
+	phase transition. This will allow us to parallelise the temperature loop as each iteration
+	is independent. This operation reduced our computing time up to $50\%$.
 
 	% ===========================================
 	\section{Results}\label{sec:results}
 	%
 	\subsection{2x2 numerical simulation}\label{subsec: 2x2 numerical}
-	We used $T=1 J/k$ and ran the simulation for \{500, 1000, 2000, 3000, 4000, 5000, 6000, 
+	We used $T=1 J/k$ and simulated \{500, 1000, 2000, 3000, 4000, 5000, 6000,
 	7000, 8000, 9000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000\}
-	cycles and $L=2$. We computed the analytical solution described in Section \ref{subsec:analytical solution}. 
-	Figures \ref{fig:chi4} and \ref{fig:cv4} shows the expected value of $\chi$ and $C_v$ for different number of cycle done. The theoretical values is plotted in dashed line. We did
+	cycles and $L=2$. We computed the analytical solution described in Section \ref{subsec:analytical solution}.
+	Figures \ref{fig:chi4} and \ref{fig:cv4} shows the expected value of $\chi$ and $C_v$ for the different number of cycle done. The theoretical values are plotted in a dashed line. We did
 	not represented $\langle m \rangle$ or $\langle E \rangle$ as they are a necessity to compute $\chi$ and $C_v$ so
 	finding good results for the last two shows that we have evaluated correctly the other
-	quantities. 
-	
+	quantities.
+
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.55]{figures/chi_problem4.pdf}
@@ -386,15 +386,14 @@ Lars Onsager in 1944. \\
 		\caption{}
 		\label{fig:cv4}
 	\end{figure}
-	
+
 	\subsection{Burn-in time estimation}\label{subsec: burn in estimation}
-	
-	For the Burn-in testing we took the same number of cycle as Section \ref{subsec: 2x2 numerical},
+
+	For the Burn-in testing, we took the same number of cycles as Section \ref{subsec: 2x2 numerical},
 	with $L=20$ instead of $L=4$. We used two different temperatures $T_1=1 J/k$ and $T_2=2.4 J/k$
-	starting from ordered (all spin being 1) and random. We plotted the expected value of $m$ 
-	and $\epsilon$ according to the number of cycles. The results are presented in 
-	Figures \ref{fig:eps5} and \ref{fig:m5}. 
-	
+	starting from ordered (all spin being 1) and random. We plotted the expected value of $m$ and $\epsilon$ according to the number of cycles. The results are presented in
+	Figures \ref{fig:eps5} and \ref{fig:m5}.
+
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.55]{figures/epsilon_problem5.pdf}
@@ -409,14 +408,13 @@ Lars Onsager in 1944. \\
 	\end{figure}
 
 	\subsection{Distribution probability of $\epsilon$}\label{subsec:dist probability}
-	
-	For the probability distribution of $\epsilon$ we took the data set used in section 
-	\ref{subsec: burn in estimation}, so 100000 cycles computed for both temperatures 
-	without any burn-in time and starting from random position. Figures \ref{fig:hist1}
-	and \ref{fig:hist2} show the histogram of our distribution for their temperature. 
-	We also computed the variance and found $\sigma\approx0.00011$ for $T=1 J/k$ and 
+
+	For the probability distribution of $\epsilon$, we took the data set used in the section
+	\ref{subsec: burn in estimation}, so 100000 cycles computed for both temperatures
+	without any burn-in time and starting from a random position. Figures \ref{fig:hist1} and \ref{fig:hist2} shows the histogram of our distribution for their temperature.
+	We also computed the variance and found $\sigma\approx0.00011$ for $T=1 J/k$ and
 	$\sigma\approx0.02023$ for $T=2.4 J/k$.
-	
+
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.55]{figures/Histo_T1.pdf}
