@@ -105,7 +105,7 @@ void problem7(int L, int burn, int cycle, bool order){
         // create the environment and run the simulation
         Ising ise(L, T, order);
         data = ise.mcmc(burn, cycle, data);
-        std::cout << T <<std::endl;
+        // std::cout << T <<std::endl;
         // data.save("test_serial_"+std::to_string(t)+".bin");
         // std::cout << "temperature: " << T << std::endl;
     }
