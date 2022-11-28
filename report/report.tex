@@ -213,7 +213,7 @@ Lars Onsager in 1944. \\
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-		\# $s_i=1$ & E [J/k] & M[1/J] & degeneracy \\
+		\# $s_i=1$ & E [J/$k_{B}$] & M[1/J] & degeneracy \\
 		\hline
 		\hline
 		0 & -4 &  -4 &  1  \\
@@ -255,7 +255,7 @@ Lars Onsager in 1944. \\
 	It means that our lattice will suddenly magnetise for a specific critical temperature $T_c$. For an infinite-size model, Lars Onsager found in 1944 that the theoretical value of
 
 	\begin{equation}
-		T_c(L=\infty)=\frac{2}{\log(1 + \sqrt{2})} J/k \approx 2.269 J/k \label{Tc_theo}
+		T_c(L=\infty)=\frac{2}{\log(1 + \sqrt{2})} \text{ J}/k_{B} \approx 2.269 \text{ J}/k_{B} \label{Tc_theo}
 	\end{equation}
 
 	Another important aspect of phase transition is that different system exhibit similar
@@ -365,7 +365,7 @@ Lars Onsager in 1944. \\
 	\section{Results}\label{sec:results}
 	%
 	\subsection{2x2 numerical simulation}\label{subsec: 2x2 numerical}
-	We used $T=1 J/k$ and simulated \{500, 1000, 2000, 3000, 4000, 5000, 6000,
+	We used $T=1 \text{ J}/k_{B}$ and simulated \{500, 1000, 2000, 3000, 4000, 5000, 6000,
 	7000, 8000, 9000, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000\}
 	cycles and $L=2$. We computed the analytical solution described in Section \ref{subsec:analytical solution}.
 	Figures \ref{fig:chi4} and \ref{fig:cv4} shows the expected value of $\chi$ and $C_v$ for the different number of cycle done. The theoretical values are plotted in a dashed line. We did
@@ -376,34 +376,34 @@ Lars Onsager in 1944. \\
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.55]{figures/chi_problem4.pdf}
-		\caption{}
+		\caption{The calculated susceptibility over number of cycles in red which converges to the exact solution in black.}
 		\label{fig:chi4}
 	\end{figure}
 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.55]{figures/CV_problem4.pdf}
-		\caption{}
+		\caption{Heat capacity plotted against the number of cycles in red which converges to the exact solution in black.}
 		\label{fig:cv4}
 	\end{figure}
 
 	\subsection{Burn-in time estimation}\label{subsec: burn in estimation}
 
 	For the Burn-in testing, we took the same number of cycles as Section \ref{subsec: 2x2 numerical},
-	with $L=20$ instead of $L=4$. We used two different temperatures $T_1=1 J/k$ and $T_2=2.4 J/k$
+	with $L=20$ instead of $L=4$. We used two different temperatures $T_1=1 \text{ J}/k_{B}$ and $T_2=2.4 \text{ J}/k_{B}$
 	starting from ordered (all spin being 1) and random. We plotted the expected value of $m$ and $\epsilon$ according to the number of cycles. The results are presented in
 	Figures \ref{fig:eps5} and \ref{fig:m5}.
 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.55]{figures/epsilon_problem5.pdf}
-		\caption{}
+		\caption{The Burn-in for the $\langle \varepsilon \rangle$ for both the ordered (in blue) and random (in green) states. And the $T=1 \text{ J}/k_{B}$ and $T=2.4 \text{ J}/k_{B}$.}
 		\label{fig:eps5}
 	\end{figure}
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale=0.55]{figures/m_problem5}
-		\caption{}
+		\includegraphics[scale=0.55]{figures/m_problem5.pdf}
+		\caption{The Burn-in for the $\langle |m| \rangle$ for both the ordered (in blue) and random (in green) states. And the $T=1 \text{ J}/k_{B}$ and $T=2.4 \text{ J}/k_{B}$.}
 		\label{fig:m5}
 	\end{figure}
 
@@ -412,27 +412,23 @@ Lars Onsager in 1944. \\
 	For the probability distribution of $\epsilon$, we took the data set used in the section
 	\ref{subsec: burn in estimation}, so 100000 cycles computed for both temperatures
 	without any burn-in time and starting from a random position. Figures \ref{fig:hist1} and \ref{fig:hist2} shows the histogram of our distribution for their temperature.
-	We also computed the variance and found $\sigma\approx0.00011$ for $T=1 J/k$ and
-	$\sigma\approx0.02023$ for $T=2.4 J/k$.
+	We also computed the variance and found $\sigma\approx0.00011$ for $T=1 \text{ J}/k_{B}$ and
+	$\sigma\approx0.02023$ for $T=2.4 \text{ J}/k_{B}$.
 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.55]{figures/Histo_T1.pdf}
-		\caption{}
+		\caption{Normalized histogram over the energy when the temperature was $T=1 \text{ J}/k_{B}$.}
 		\label{fig:hist1}
 	\end{figure}
 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.55]{figures/Histo_T2.pdf}
-		\caption{}
+		\caption{Normalized histogram over the energy where the temperature was $T=2.4 \text{ J}/k_{B}$.}
 		\label{fig:hist2}
 	\end{figure}
 
-	\subsection{Phase Transition}\label{subsec:num phase transition}
-
-	MOM! IT IS NOT JUST A PHASE!!!!!
-	
 	% ===========================================
 	\section{Discussion}\label{sec:discussion}
 	%
@@ -459,6 +455,13 @@ Lars Onsager in 1944. \\
 	\subsection{Parallelization}\label{subsec: dis parallelization}
 
 	\subsection{Phase transition and critical temperature}\label{subsec: dis phase transition}
+	We observe from the \autoref{fig:m5} that the magnetisation converges towards 0.
+	This in the 2D Ising model means that we have surpassed a critical temperature.
+	Which is an example of what is usually refered to as the critical phenomena.
+	And in our case that is $\langle |m| \rangle$.
+	This does not happen in the 1D Ising model, but happens in the 2D and 3D model.
+	When we reach the critical temperature and turn it into a paramagnetic.
+
 	
 	% ===========================================
 	\section{Conclusion}\label{sec:conclusion}
@@ -468,9 +471,9 @@ Lars Onsager in 1944. \\
 	phase transition. For different lattice sizes, we iterated over four different lattice
 	sizes $L=$\{40, 60, 80, 100 \}, and used the MCMC algorithm to compute the expected values
 	of $\chi$ and $C_v$. This allowed us to find a critical temperature of $T_c(L=\infty)$
-	to be $ 2.29 \pm 0.04 J/k $ where the error is calculated via the fitting function
+	to be $ 2.29 \pm 0.04 \text{ J}/k_{B} $ where the error is calculated via the fitting function
 	\textit{linregress} from the \textbf{scipy} library. The numerical value is in the range
-	of the theoretical value $T_{c}^{\rm th} \approx 2.269 J/k$.
+	of the theoretical value $T_{c}^{\rm th} \approx 2.269 \text{ J}/k_{B}$.
 	
 	\onecolumngrid
 	\section*{Refrences}
