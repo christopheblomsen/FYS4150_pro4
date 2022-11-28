@@ -96,6 +96,9 @@ we can only compute theoretical values when we reach equilibrium, we used the
 "Burn-in"  method to determine the number of cycles needed to reach equilibrium.
 For a 20x20 lattice, we determine that around 10000 cycles are enough to reach
 equilibrium.
+\\
+\newline
+Github link: \href{https://github.com/christopheblomsen/FYS4150_pro4}{https://github.com/christopheblomsen/FYS4150\_pro4}
 \end{abstract}
 	\maketitle	
 	
@@ -451,15 +454,24 @@ Lars Onsager in 1944. \\
 
 
 	\subsection{Distribution of $\epsilon$}\label{subsec:dis epsilon}
+	We observe from the \autoref{fig:hist1} and \autoref{fig:hist2} that the temperature directly impacts the probability distribution of the energy states that our Ising model can take.
+	We can imagine a Boltzmann distribution from our normalised histogram \autoref{fig:hist1}.
+	While \autoref{fig:hist2} looks more like a gaussian distribution, but could also see as a Boltzmann distribution.
+	We can conclude from this that the distribution of energy is lower for lower temperatures.
+	This is to be expected since one needs temperature to perform the transitions.
 
 	\subsection{Parallelization}\label{subsec: dis parallelization}
+	The parallelisation done with \lstinline{OpenMP} significantly boosted the run time.
+	On our local machine, it went from having a run time in serial: 41 s.
+	When we parallelised over the temperatures, we got the time down to 12 s.
+	That is an increase on $\sim 3.4$, which we could do because the temperature simulations were independent.
 
 	\subsection{Phase transition and critical temperature}\label{subsec: dis phase transition}
 	We observe from the \autoref{fig:m5} that the magnetisation converges towards 0.
-	This in the 2D Ising model means that we have surpassed a critical temperature.
-	Which is an example of what is usually refered to as the critical phenomena.
-	And in our case that is $\langle |m| \rangle$.
-	This does not happen in the 1D Ising model, but happens in the 2D and 3D model.
+	The 2D Ising model means that we have surpassed a critical temperature.
+	Which is an example of what is usually referred to as the critical phenomena.
+	And in our case, that is $\langle |m| \rangle$.
+	This does not happen in the 1D Ising model but in the 2D and 3D models.
 	When we reach the critical temperature and turn it into a paramagnetic.
 
 	
@@ -478,7 +490,6 @@ Lars Onsager in 1944. \\
 	\onecolumngrid
 	\section*{Refrences}
 	%\bibliographystyle{apalike}
-	%\printbibliography[heading=bibintoc, title={Refrences}]
 	\bibliography{refs}
 	
 	
