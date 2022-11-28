@@ -172,18 +172,18 @@ test = list_[::3]
 
 # Plot Problem 5
 
-fig, ax = plt.subplots()
-ax.plot(list_, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
-ax.plot(list_, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
-ax.plot(list_, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
-ax.plot(list_, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
-ax.set_xticks(test)
-ax.set_xticklabels(test)
-ax.legend(loc='best')
-ax.set_xlabel(r'$\mathrm{Number\ of\ cycles}$')
-ax.set_ylabel(r'$\langle\epsilon\rangle$')
-ax.set_title(r'$\langle\epsilon\rangle \mathrm{\ vs\ number\ of\ cycles}$')
-# # fig.savefig("epsilon_problem5.pdf")
+# fig, ax = plt.subplots()
+# ax.plot(list_, epsilon1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
+# ax.plot(list_, epsilon1_rdm, 'go-', label=r'$\mathrm{Random, T=1}$')
+# ax.plot(list_, epsilon2_ord, 'b--', label=r'$\mathrm{Ordered, T=2.4}$')
+# ax.plot(list_, epsilon2_rdm, 'g--', label=r'$\mathrm{Random, T=2.4}$')
+# ax.set_xticks(test)
+# ax.set_xticklabels(test)
+# ax.legend(loc='best')
+# ax.set_xlabel(r'$\mathrm{Number\ of\ cycles}$')
+# ax.set_ylabel(r'$\langle\epsilon\rangle$')
+# ax.set_title(r'$\langle\epsilon\rangle \mathrm{\ vs\ number\ of\ cycles}$')
+# fig.savefig("epsilon_problem5.pdf")
 
 fig, ax = plt.subplots()
 ax.plot(list_, m1_ord, 'bo-', label=r'$\mathrm{Ordered, T=1}$')
@@ -196,7 +196,7 @@ ax.legend(loc='best')
 ax.set_xlabel(r'$\langle |m|\rangle\mathrm{Number\ of\ cycles}$')
 ax.set_ylabel(r'$\langle |m| \rangle$')
 ax.set_title(r'$\langle |m|\rangle \mathrm{\ vs\ number\ of\ cycles}$')
-# # fig.savefig("m_problem5.pdf")
+# fig.savefig("m_problem5.pdf")
 
 
 # Problem 6
