@@ -15,4 +15,4 @@ code $ ./main N
 ```
 
 Where `N` is an integer number representing the problem we want to run. And can take the numbers `4, 5, 7, 8`. 
-The corresponding problems can we found in the [utils.cpp](code/utils.cpp) file.
+The corresponding problems can we found in the [utils.cpp](code/src/utils.cpp) file.
